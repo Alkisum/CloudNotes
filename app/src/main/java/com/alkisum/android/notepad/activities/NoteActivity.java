@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alkisum.android.notepad.R;
@@ -67,13 +68,13 @@ public class NoteActivity extends AppCompatActivity {
      * EditText containing the note title.
      */
     @BindView(R.id.note_edit_title)
-    TextView titleEditText;
+    EditText titleEditText;
 
     /**
      * EditText containing the note content.
      */
     @BindView(R.id.note_edit_content)
-    TextView contentEditText;
+    EditText contentEditText;
 
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {

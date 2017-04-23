@@ -37,7 +37,8 @@
             android:id="@+id/note_text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/lightPrimaryText"/>
+            android:textColor="@color/lightPrimaryText"
+            android:textIsSelectable="true"/>
 
         <EditText
             android:id="@+id/note_edit_title"
@@ -65,7 +66,8 @@
             android:id="@+id/note_text_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/lightPrimaryText"/>
+            android:textColor="@color/lightPrimaryText"
+            android:textIsSelectable="true"/>
 
         <EditText
             android:id="@+id/note_edit_content"
