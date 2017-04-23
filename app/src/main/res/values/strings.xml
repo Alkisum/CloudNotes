@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Notepad</string>
+
+    <!-- Dialogs -->
+    <string name="delete_note_title">Delete note?</string>
+    <string name="delete_notes_title">Delete notes?</string>
+    <string name="delete_notes_message">Deleting notes cannot be undone</string>
+
+    <!-- Actions -->
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_save">Save</string>
+    <string name="action_select_all">Select all</string>
+    <string name="action_share">Share</string>
+    <string name="action_about">About</string>
+
+    <!-- NoteActivity -->
+    <string name="note_hint_title">Title</string>
+    <string name="note_hint_content">Content</string>
+    <string name="note_toolbar_title_create">Create new note</string>
+    <string name="note_toolbar_title_edit">Edit note</string>
+
+    <!-- Note list item -->
+    <string name="note_last_update">Last update:</string>
+
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_github">https://github.com/Alkisum/Notepad/</string>
+
+</resources>
