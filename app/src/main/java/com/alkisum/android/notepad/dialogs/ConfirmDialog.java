@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 /**
- * Class to build a simple confirmation dialog.
+ * Class to show a simple confirmation dialog.
  *
  * @author Alkisum
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public final class ConfirmDialog {
@@ -21,23 +21,22 @@ public final class ConfirmDialog {
     }
 
     /**
-     * Build the AlertDialog.
+     * Build and show the AlertDialog.
      *
      * @param context         Context in which the dialog should be built
      * @param title           Dialog title
      * @param message         Dialog message
      * @param action          String that will shown as positive button
      * @param onClickListener Task to run when the positive button is clicked
-     * @return AlertDialog builder ready to be shown
      */
-    public static AlertDialog.Builder build(
+    public static void show(
             final Context context, final String title, final String message,
             final String action,
             final DialogInterface.OnClickListener onClickListener) {
-        return new AlertDialog.Builder(context)
+        new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(action, onClickListener)
-                .setNegativeButton(android.R.string.cancel, null);
+                .setNegativeButton(android.R.string.cancel, null).show();
     }
 }

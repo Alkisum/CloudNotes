@@ -13,6 +13,14 @@
     <string name="action_select_all">Select all</string>
     <string name="action_share">Share</string>
     <string name="action_about">About</string>
+    <string name="action_download">Download</string>
+    <string name="action_upload">Upload</string>
+
+    <!-- MainActivity -->
+    <string name="main_no_note">No notes available</string>
+
+    <!-- Note list item -->
+    <string name="note_last_update">Last update:</string>
 
     <!-- NoteActivity -->
     <string name="note_hint_title">Title</string>
@@ -20,11 +28,21 @@
     <string name="note_toolbar_title_create">Create new note</string>
     <string name="note_toolbar_title_edit">Edit note</string>
 
-    <!-- Note list item -->
-    <string name="note_last_update">Last update:</string>
-
     <!-- About -->
     <string name="about_title">About</string>
     <string name="about_github">https://github.com/Alkisum/Notepad/</string>
+
+    <!-- General OwnCloud Operations -->
+    <string name="operation_progress_init_msg">Preparing&#8230; (0%)</string>
+    <string name="upload_writing_failure_title">File creation failed</string>
+    <string name="upload_failure_title">Upload failed</string>
+    <string name="download_failure_title">Download failed</string>
+    <string name="download_success_toast">Notes downloaded</string>
+    <string name="download_no_file_toast">No notes to be downloaded</string>
+    <string name="download_reading_failure_title">File parsing failed</string>
+    <string name="download_reading_msg">Reading data&#8230;</string>
+    <string name="download_insert_failure_title">Insertion into database failed</string>
+    <string name="download_inserting_msg">Inserting data&#8230;</string>
+    <string name="upload_success_toast">Note uploaded</string>
 
 </resources>

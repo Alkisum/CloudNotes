@@ -10,11 +10,10 @@ import android.support.v7.widget.Toolbar;
 
 import com.alkisum.android.notepad.BuildConfig;
 import com.alkisum.android.notepad.R;
+import com.alkisum.android.notepad.utils.Format;
 import com.alkisum.android.notepad.utils.Pref;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 
@@ -22,7 +21,7 @@ import butterknife.ButterKnife;
  * Activity listing information about the application.
  *
  * @author Alkisum
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class AboutActivity extends AppCompatActivity {
@@ -49,12 +48,6 @@ public class AboutActivity extends AppCompatActivity {
      */
     public static class AboutFragment extends PreferenceFragment {
 
-        /**
-         * Format for build date.
-         */
-        public static final SimpleDateFormat DATE_BUILD =
-                new SimpleDateFormat("MMM. dd, yyyy", Locale.getDefault());
-
         @Override
         public final void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -67,7 +60,7 @@ public class AboutActivity extends AppCompatActivity {
 
             // Build date
             Preference datePreference = findPreference(Pref.BUILD_DATE);
-            datePreference.setSummary(DATE_BUILD.format(
+            datePreference.setSummary(Format.DATE_BUILD.format(
                     new Date(BuildConfig.TIMESTAMP)));
 
             // Github

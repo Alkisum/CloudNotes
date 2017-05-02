@@ -1,1 +1,2 @@
-include ':app'
+include ':cloudops', ':app'
+project(':cloudops').projectDir = new File(settingsDir, '../CloudOps/cloudops')

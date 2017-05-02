@@ -31,12 +31,12 @@ public final class Db {
     /**
      * DaoSession instance.
      */
-    private DaoSession mDaoSession;
+    private DaoSession daoSession;
 
     /**
      * Database instance.
      */
-    private static Db mInstance = null;
+    private static Db instance = null;
 
     /**
      * Db constructor.
@@ -49,10 +49,10 @@ public final class Db {
      * @return Database instance
      */
     public static Db getInstance() {
-        if (mInstance == null) {
-            mInstance = new Db();
+        if (instance == null) {
+            instance = new Db();
         }
-        return mInstance;
+        return instance;
     }
 
     /**
@@ -66,7 +66,7 @@ public final class Db {
                 context.getApplicationContext(), NAME, null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
-        mDaoSession = daoMaster.newSession();
+        daoSession = daoMaster.newSession();
         return this;
     }
 
@@ -74,7 +74,7 @@ public final class Db {
      * @return DaoSession instance
      */
     public DaoSession getDaoSession() {
-        return mDaoSession;
+        return daoSession;
     }
 
     /**
