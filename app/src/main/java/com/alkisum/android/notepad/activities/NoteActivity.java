@@ -1,12 +1,10 @@
 package com.alkisum.android.notepad.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,21 +13,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alkisum.android.cloudops.file.json.JsonFile;
-import com.alkisum.android.cloudops.net.ConnectDialog;
-import com.alkisum.android.cloudops.net.ConnectInfo;
-import com.alkisum.android.cloudops.net.owncloud.OcUploader;
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.database.Db;
 import com.alkisum.android.notepad.dialogs.ConfirmDialog;
-import com.alkisum.android.notepad.dialogs.ErrorDialog;
-import com.alkisum.android.notepad.files.Json;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
-
-import org.json.JSONException;
+import com.alkisum.android.notepad.net.CloudOpsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,18 +34,12 @@ import butterknife.ButterKnife;
  * @version 1.1
  * @since 1.0
  */
-public class NoteActivity extends AppCompatActivity implements
-        ConnectDialog.ConnectDialogListener, OcUploader.UploaderListener {
+public class NoteActivity extends AppCompatActivity {
 
     /**
      * Argument for the note id.
      */
     static final String ARG_NOTE_ID = "arg_note_id";
-
-    /**
-     * Operation id for upload.
-     */
-    private static final int UPLOAD_OPERATION = 1;
 
     /**
      * Flag set to true if the edit mode is on, false otherwise.
@@ -73,15 +57,9 @@ public class NoteActivity extends AppCompatActivity implements
     private NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
 
     /**
-     * OcUploader instance created when the user presses on the Upload item from
-     * the option menu, and initialized when the connect dialog is submit.
+     * CloudOpsHelper instance that implements all CloudOps interfaces.
      */
-    private OcUploader uploader;
-
-    /**
-     * Progress dialog to show the progress of operations.
-     */
-    private ProgressDialog progressDialog;
+    private CloudOpsHelper cloudOpsHelper;
 
     /**
      * TextView containing the note title.
@@ -134,6 +112,8 @@ public class NoteActivity extends AppCompatActivity implements
             setToolbarTitle(R.string.note_toolbar_title_create);
             setEditMode(true);
         }
+
+        cloudOpsHelper = new CloudOpsHelper(this);
     }
 
     @Override
@@ -190,18 +170,7 @@ public class NoteActivity extends AppCompatActivity implements
             case R.id.action_upload:
                 List<Note> notes = new ArrayList<>();
                 notes.add(note);
-                DialogFragment connectDialogUpload =
-                        ConnectDialog.newInstance(UPLOAD_OPERATION);
-                connectDialogUpload.show(getSupportFragmentManager(),
-                        ConnectDialog.FRAGMENT_TAG);
-                try {
-                    uploader = new OcUploader(this,
-                            Json.buildJsonFilesFromNotes(notes));
-                } catch (JSONException e) {
-                    ErrorDialog.show(this,
-                            getString(R.string.upload_failure_title),
-                            e.getMessage());
-                }
+                cloudOpsHelper.onUploadAction(notes);
                 return true;
             default:
                 break;
@@ -345,113 +314,5 @@ public class NoteActivity extends AppCompatActivity implements
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
-    /**
-     * Start the upload operation.
-     *
-     * @param connectInfo Connection information given by user
-     */
-    private void startUpload(final ConnectInfo connectInfo) {
-        if (uploader == null) {
-            return;
-        }
-        uploader.init(
-                connectInfo.getAddress(),
-                connectInfo.getPath(),
-                connectInfo.getUsername(),
-                connectInfo.getPassword()).start();
-    }
-
-    @Override
-    public final void onSubmit(final int operation,
-                               final ConnectInfo connectInfo) {
-        if (operation == UPLOAD_OPERATION) {
-            startUpload(connectInfo);
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog = new ProgressDialog(NoteActivity.this);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setProgressStyle(
-                        ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setProgressNumberFormat(null);
-                progressDialog.setMessage(getString(
-                        R.string.operation_progress_init_msg));
-                progressDialog.show();
-            }
-        });
-    }
-
-    @Override
-    public final void onWritingFileFailed(final Exception e) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(NoteActivity.this,
-                        getString(R.string.upload_writing_failure_title),
-                        e.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public final void onUploadStart(final JsonFile jsonFile) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setMessage("Uploading "
-                            + jsonFile.getName() + " ...");
-                    progressDialog.setIndeterminate(false);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onUploading(final int percentage) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setProgress(percentage);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onAllUploadComplete() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                Toast.makeText(NoteActivity.this,
-                        getString(R.string.upload_success_toast),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public final void onUploadFailed(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(NoteActivity.this, getString(
-                        R.string.upload_failure_title), message);
-            }
-        });
     }
 }

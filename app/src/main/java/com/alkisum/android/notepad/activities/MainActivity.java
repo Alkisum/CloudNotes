@@ -1,11 +1,9 @@
 package com.alkisum.android.notepad.activities;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,29 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alkisum.android.cloudops.file.json.JsonFile;
-import com.alkisum.android.cloudops.net.ConnectDialog;
-import com.alkisum.android.cloudops.net.ConnectInfo;
-import com.alkisum.android.cloudops.net.owncloud.OcDownloader;
-import com.alkisum.android.cloudops.net.owncloud.OcUploader;
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.adapters.NoteListAdapter;
 import com.alkisum.android.notepad.database.Db;
-import com.alkisum.android.notepad.database.Inserter;
 import com.alkisum.android.notepad.database.Notes;
 import com.alkisum.android.notepad.dialogs.ConfirmDialog;
-import com.alkisum.android.notepad.dialogs.ErrorDialog;
-import com.alkisum.android.notepad.files.Json;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
-import com.owncloud.android.lib.resources.files.RemoteFile;
+import com.alkisum.android.notepad.net.CloudOpsHelper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,19 +36,8 @@ import butterknife.OnItemLongClick;
  * @version 1.1
  * @since 1.0
  */
-public class MainActivity extends AppCompatActivity implements
-        ConnectDialog.ConnectDialogListener, OcUploader.UploaderListener,
-        OcDownloader.OcDownloaderListener, Inserter.InserterListener {
-
-    /**
-     * Operation id for download.
-     */
-    private static final int DOWNLOAD_OPERATION = 1;
-
-    /**
-     * Operation id for upload.
-     */
-    private static final int UPLOAD_OPERATION = 2;
+public class MainActivity extends AppCompatActivity
+        implements CloudOpsHelper.CloudOpsHelperListener {
 
     /**
      * List adapter for the list view listing the notes.
@@ -71,26 +45,14 @@ public class MainActivity extends AppCompatActivity implements
     private NoteListAdapter listAdapter;
 
     /**
-     * Progress dialog to show the progress of operations.
-     */
-    private ProgressDialog progressDialog;
-
-    /**
      * Note DAO instance.
      */
     private NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
 
     /**
-     * OcDownloader instance created when the user presses on the Download item
-     * from the option menu, and initialized when the connect dialog is submit.
+     * CloudOpsHelper instance that implements all CloudOps interfaces.
      */
-    private OcDownloader downloader;
-
-    /**
-     * OcUploader instance created when the user presses on the Upload item from
-     * the option menu, and initialized when the connect dialog is submit.
-     */
-    private OcUploader uploader;
+    private CloudOpsHelper cloudOpsHelper;
 
     /**
      * List view listing the notes.
@@ -125,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements
 
         listAdapter = new NoteListAdapter(this, loadNotes());
         listView.setAdapter(listAdapter);
+
+        cloudOpsHelper = new CloudOpsHelper(this);
     }
 
     @Override
@@ -174,11 +138,7 @@ public class MainActivity extends AppCompatActivity implements
                 setEditMode(false);
                 return true;
             case R.id.action_download:
-                DialogFragment connectDialogDownload =
-                        ConnectDialog.newInstance(DOWNLOAD_OPERATION);
-                connectDialogDownload.show(getSupportFragmentManager(),
-                        ConnectDialog.FRAGMENT_TAG);
-                downloader = new OcDownloader(this);
+                cloudOpsHelper.onDownloadAction();
                 return true;
             case R.id.action_delete:
                 ConfirmDialog.show(this,
@@ -195,20 +155,7 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
             case R.id.action_upload:
                 List<Note> notes = Notes.getSelectedNotes();
-                if (!notes.isEmpty()) {
-                    DialogFragment connectDialogUpload =
-                            ConnectDialog.newInstance(UPLOAD_OPERATION);
-                    connectDialogUpload.show(getSupportFragmentManager(),
-                            ConnectDialog.FRAGMENT_TAG);
-                    try {
-                        uploader = new OcUploader(this,
-                                Json.buildJsonFilesFromNotes(notes));
-                    } catch (JSONException e) {
-                        ErrorDialog.show(this,
-                                getString(R.string.upload_failure_title),
-                                e.getMessage());
-                    }
-                }
+                cloudOpsHelper.onUploadAction(notes);
                 return true;
             case R.id.action_select_all:
                 selectAll();
@@ -332,281 +279,8 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Start the download operation.
-     *
-     * @param connectInfo Connection information given by user
-     */
-    private void startDownload(final ConnectInfo connectInfo) {
-        if (downloader == null) {
-            return;
-        }
-        downloader.init(
-                connectInfo.getAddress(),
-                connectInfo.getPath(),
-                connectInfo.getUsername(),
-                connectInfo.getPassword()).start();
-    }
-
-    /**
-     * Start the upload operation.
-     *
-     * @param connectInfo Connection information given by user
-     */
-    private void startUpload(final ConnectInfo connectInfo) {
-        if (uploader == null) {
-            return;
-        }
-        uploader.init(
-                connectInfo.getAddress(),
-                connectInfo.getPath(),
-                connectInfo.getUsername(),
-                connectInfo.getPassword()).start();
-    }
-
     @Override
-    public final void onSubmit(final int operation,
-                               final ConnectInfo connectInfo) {
-        if (operation == DOWNLOAD_OPERATION) {
-            startDownload(connectInfo);
-        } else if (operation == UPLOAD_OPERATION) {
-            startUpload(connectInfo);
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog = new ProgressDialog(MainActivity.this);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setProgressStyle(
-                        ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setProgressNumberFormat(null);
-                progressDialog.setMessage(getString(
-                        R.string.operation_progress_init_msg));
-                progressDialog.show();
-            }
-        });
-    }
-
-    @Override
-    public final void onWritingFileFailed(final Exception e) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(MainActivity.this,
-                        getString(R.string.upload_writing_failure_title),
-                        e.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public final void onUploadStart(final JsonFile jsonFile) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setMessage("Uploading "
-                            + jsonFile.getName() + " ...");
-                    progressDialog.setIndeterminate(false);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onUploading(final int percentage) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setProgress(percentage);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onAllUploadComplete() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                Toast.makeText(MainActivity.this,
-                        getString(R.string.upload_success_toast),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public final void onUploadFailed(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(MainActivity.this, getString(
-                        R.string.upload_failure_title), message);
-            }
-        });
-    }
-
-    @Override
-    public final void onDownloadStart(final RemoteFile file) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setMessage("Downloading "
-                            + file.getRemotePath() + " ...");
-                    progressDialog.setIndeterminate(false);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onNoFileToDownload() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                Toast.makeText(MainActivity.this, getString(R.string.
-                        download_no_file_toast), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public final void onDownloading(final int percentage) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setProgress(percentage);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onAllDownloadComplete() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.setMessage(
-                            getString(R.string.download_reading_msg));
-                    progressDialog.setProgressPercentFormat(null);
-                    progressDialog.setIndeterminate(true);
-                }
-            }
-        });
-    }
-
-    @Override
-    public final void onDownloadFailed(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(MainActivity.this, getString(
-                        R.string.download_failure_title), message);
-            }
-        });
-    }
-
-    @Override
-    public final void onJsonFilesRead(final List<JsonFile> jsonFiles) {
-        List<JSONObject> jsonObjects = new ArrayList<>();
-        for (JsonFile jsonFile : jsonFiles) {
-            if (Json.isFileNameValid(jsonFile)
-                    && !Json.isNoteAlreadyInDb(jsonFile)) {
-                jsonObjects.add(jsonFile.getJsonObject());
-            }
-        }
-
-        if (jsonObjects.isEmpty()) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (progressDialog != null) {
-                        progressDialog.dismiss();
-                    }
-                    Toast.makeText(MainActivity.this, getString(R.string.
-                                    download_no_file_toast),
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (progressDialog != null) {
-                        progressDialog.setMessage(
-                                getString(R.string.download_inserting_msg));
-                        progressDialog.setProgressPercentFormat(null);
-                        progressDialog.setIndeterminate(true);
-                    }
-                }
-            });
-            new Inserter(this, jsonObjects).execute();
-        }
-    }
-
-    @Override
-    public final void onReadingFileFailed(final Exception e) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(MainActivity.this,
-                        getString(R.string.download_reading_failure_title),
-                        e.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public final void onDataInserted() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                refreshList();
-                Toast.makeText(MainActivity.this, getString(R.string.
-                        download_success_toast), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public final void onInsertDataFailed(final Exception exception) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                ErrorDialog.show(MainActivity.this,
-                        getString(R.string.download_insert_failure_title),
-                        exception.getMessage());
-            }
-        });
+    public final void onRefreshList() {
+        refreshList();
     }
 }
