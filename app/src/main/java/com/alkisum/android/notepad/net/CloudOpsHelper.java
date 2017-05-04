@@ -1,7 +1,6 @@
 package com.alkisum.android.notepad.net;
 
 import android.app.ProgressDialog;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -32,7 +31,7 @@ import java.util.List;
  * @since 1.1
  */
 public class CloudOpsHelper implements
-        ConnectDialog.ConnectDialogListener, OcUploader.UploaderListener,
+        ConnectDialog.ConnectDialogListener, OcUploader.OcUploaderListener,
         OcDownloader.OcDownloaderListener, Inserter.InserterListener {
 
     /**
@@ -80,6 +79,7 @@ public class CloudOpsHelper implements
 
     /**
      * CloudOps constructor.
+     *
      * @param activity Activity to help
      */
     public CloudOpsHelper(final AppCompatActivity activity) {
@@ -96,25 +96,28 @@ public class CloudOpsHelper implements
      * Triggered by the download action from the activity menu.
      */
     public final void onDownloadAction() {
-        DialogFragment connectDialogDownload =
+        ConnectDialog connectDialog =
                 ConnectDialog.newInstance(DOWNLOAD_OPERATION);
-        connectDialogDownload.show(activity.getSupportFragmentManager(),
+        connectDialog.setCallback(this);
+        connectDialog.show(activity.getSupportFragmentManager(),
                 ConnectDialog.FRAGMENT_TAG);
-        downloader = new OcDownloader(activity);
+        downloader = new OcDownloader(activity, this);
     }
 
     /**
      * Triggered by the upload action from the activity menu.
+     *
      * @param notes List of notes to upload
      */
     public final void onUploadAction(final List<Note> notes) {
         if (!notes.isEmpty()) {
-            DialogFragment connectDialogUpload =
+            ConnectDialog connectDialog =
                     ConnectDialog.newInstance(UPLOAD_OPERATION);
-            connectDialogUpload.show(activity.getSupportFragmentManager(),
+            connectDialog.setCallback(this);
+            connectDialog.show(activity.getSupportFragmentManager(),
                     ConnectDialog.FRAGMENT_TAG);
             try {
-                uploader = new OcUploader(activity,
+                uploader = new OcUploader(activity, this,
                         Json.buildJsonFilesFromNotes(notes));
             } catch (JSONException e) {
                 ErrorDialog.show(activity,
@@ -367,7 +370,7 @@ public class CloudOpsHelper implements
                     progressDialog.dismiss();
                 }
                 ErrorDialog.show(activity, activity.getString(
-                                R.string.download_reading_failure_title),
+                        R.string.download_reading_failure_title),
                         e.getMessage());
             }
         });

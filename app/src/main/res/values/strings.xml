@@ -12,7 +12,6 @@
     <string name="action_save">Save</string>
     <string name="action_select_all">Select all</string>
     <string name="action_share">Share</string>
-    <string name="action_about">About</string>
     <string name="action_download">Download</string>
     <string name="action_upload">Upload</string>
 
@@ -44,5 +43,14 @@
     <string name="download_insert_failure_title">Insertion into database failed</string>
     <string name="download_inserting_msg">Inserting data&#8230;</string>
     <string name="upload_success_toast">Note uploaded</string>
+
+    <!-- Navigation drawer -->
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="nav_drawer_notes">Notes</string>
+    <string name="nav_drawer_settings">Settings</string>
+
+    <!-- SettingsActivity-->
+    <string name="settings_title">Settings</string>
 
 </resources>

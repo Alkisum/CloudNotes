@@ -36,12 +36,12 @@ public class NoteListAdapter extends BaseAdapter {
     /**
      * Context.
      */
-    private Context context;
+    private final Context context;
 
     /**
      * List of notes.
      */
-    private List<Note> notes;
+    private final List<Note> notes;
 
     /**
      * Flag set to true if the edit mode is on, false otherwise.

@@ -3,7 +3,12 @@ package com.alkisum.android.notepad.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,8 +41,9 @@ import butterknife.OnItemLongClick;
  * @version 1.1
  * @since 1.0
  */
-public class MainActivity extends AppCompatActivity
-        implements CloudOpsHelper.CloudOpsHelperListener {
+public class MainActivity extends AppCompatActivity implements
+        CloudOpsHelper.CloudOpsHelperListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     /**
      * List adapter for the list view listing the notes.
@@ -47,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Note DAO instance.
      */
-    private NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
+    private final NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
 
     /**
      * CloudOpsHelper instance that implements all CloudOps interfaces.
@@ -72,6 +78,12 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.main_no_note)
     TextView noNoteTextView;
 
+    /**
+     * Navigation drawer layout.
+     */
+    @BindView(R.id.main_drawer_layout)
+    DrawerLayout drawer;
+
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +96,16 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setHomeAsUpIndicator(
                     R.drawable.ic_close_white_24dp);
         }
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.nav_drawer_open,
+                R.string.nav_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = ButterKnife.findById(
+                this, R.id.main_nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         listAdapter = new NoteListAdapter(this, loadNotes());
         listView.setAdapter(listAdapter);
@@ -127,7 +149,6 @@ public class MainActivity extends AppCompatActivity
         menu.findItem(R.id.action_upload).setVisible(listAdapter.isEditMode());
         menu.findItem(R.id.action_select_all).setVisible(
                 listAdapter.isEditMode());
-        menu.findItem(R.id.action_about).setVisible(!listAdapter.isEditMode());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -159,9 +180,6 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_select_all:
                 selectAll();
-                return true;
-            case R.id.action_about:
-                startAboutActivity();
                 return true;
             default:
                 break;
@@ -263,24 +281,35 @@ public class MainActivity extends AppCompatActivity
         return dao.queryBuilder().orderDesc(NoteDao.Properties.Time).list();
     }
 
-    /**
-     * Start the AboutActivity.
-     */
-    private void startAboutActivity() {
-        startActivity(new Intent(this, AboutActivity.class));
-    }
-
     @Override
     public final void onBackPressed() {
-        if (listAdapter.isEditMode()) {
-            setEditMode(false);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (listAdapter.isEditMode()) {
+                setEditMode(false);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
     @Override
     public final void onRefreshList() {
         refreshList();
+    }
+
+    @Override
+    public final boolean onNavigationItemSelected(
+            @NonNull final MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

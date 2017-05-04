@@ -54,7 +54,7 @@ public class NoteActivity extends AppCompatActivity {
     /**
      * Note DAO.
      */
-    private NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
+    private final NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
 
     /**
      * CloudOpsHelper instance that implements all CloudOps interfaces.
