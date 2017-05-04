@@ -103,7 +103,8 @@ public class Inserter extends AsyncTask<Void, Void, Void> {
         Note note = new Note(null,
                 jsonNote.getString(Json.NOTE_TITLE),
                 jsonNote.getString(Json.NOTE_CONTENT),
-                jsonNote.getLong(Json.NOTE_TIME));
+                jsonNote.getLong(Json.NOTE_CREATED_TIME),
+                jsonNote.getLong(Json.NOTE_UPDATED_TIME));
         noteDao.insert(note);
     }
 

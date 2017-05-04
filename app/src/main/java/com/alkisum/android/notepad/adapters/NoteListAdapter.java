@@ -147,7 +147,7 @@ public class NoteListAdapter extends BaseAdapter {
         holder.content.setText(note.getContent());
         holder.time.setText(String.format("%s %s",
                 context.getString(R.string.note_last_update),
-                DATE_FORMAT.format(note.getTime())));
+                DATE_FORMAT.format(note.getUpdatedTime())));
         holder.checkBox.setChecked(note.isSelected());
 
         if (editMode) {

@@ -55,9 +55,14 @@ public final class Json {
     public static final String NOTE_CONTENT = "content";
 
     /**
-     * JSON name for note time.
+     * JSON name for note created time.
      */
-    public static final String NOTE_TIME = "time";
+    public static final String NOTE_CREATED_TIME = "created time";
+
+    /**
+     * JSON name for note updated time.
+     */
+    public static final String NOTE_UPDATED_TIME = "updated time";
 
     /**
      * Json constructor.
@@ -92,7 +97,7 @@ public final class Json {
      */
     private static String buildFileName(final Note note) {
         return note.getTitle() + "_" + Format.DATE_TIME_JSON.format(
-                new Date(note.getTime())) + JsonFile.FILE_EXT;
+                new Date(note.getCreatedTime())) + JsonFile.FILE_EXT;
     }
 
     /**
@@ -106,7 +111,8 @@ public final class Json {
             throws JSONException {
 
         JSONObject jsonNote = new JSONObject();
-        jsonNote.put(NOTE_TIME, note.getTime());
+        jsonNote.put(NOTE_CREATED_TIME, note.getCreatedTime());
+        jsonNote.put(NOTE_UPDATED_TIME, note.getUpdatedTime());
         jsonNote.put(NOTE_TITLE, note.getTitle());
         jsonNote.put(NOTE_CONTENT, note.getContent());
 

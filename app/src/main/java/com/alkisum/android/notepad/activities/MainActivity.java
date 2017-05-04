@@ -278,7 +278,8 @@ public class MainActivity extends AppCompatActivity implements
      * @return List of notes
      */
     private List<Note> loadNotes() {
-        return dao.queryBuilder().orderDesc(NoteDao.Properties.Time).list();
+        return dao.queryBuilder().orderDesc(NoteDao.Properties.UpdatedTime)
+                .list();
     }
 
     @Override

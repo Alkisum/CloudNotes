@@ -15,17 +15,21 @@ public class Note {
 
     private String content;
 
-    private Long time;
+    private Long createdTime;
+
+    private Long updatedTime;
 
     @Transient
     private boolean selected;
 
-    @Generated(hash = 850594172)
-    public Note(Long id, String title, String content, Long time) {
+    @Generated(hash = 1442565144)
+    public Note(Long id, String title, String content, Long createdTime,
+            Long updatedTime) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.time = time;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
     }
 
     @Generated(hash = 1272611929)
@@ -56,12 +60,20 @@ public class Note {
         this.content = content;
     }
 
-    public Long getTime() {
-        return this.time;
+    public Long getCreatedTime() {
+        return this.createdTime;
     }
 
-    public void setTime(Long time) {
-        this.time = time;
+    public void setCreatedTime(Long createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Long getUpdatedTime() {
+        return this.updatedTime;
+    }
+
+    public void setUpdatedTime(Long updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public boolean isSelected() {

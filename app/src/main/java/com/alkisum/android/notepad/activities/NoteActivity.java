@@ -218,16 +218,18 @@ public class NoteActivity extends AppCompatActivity {
      * or update the note.
      */
     private void saveNote() {
+        long time = System.currentTimeMillis();
         if (note == null) {
             note = new Note(null,
                     titleEditText.getText().toString(),
                     contentEditText.getText().toString(),
-                    System.currentTimeMillis());
+                    time,
+                    time);
             dao.insert(note);
         } else {
             note.setTitle(titleEditText.getText().toString());
             note.setContent(contentEditText.getText().toString());
-            note.setTime(System.currentTimeMillis());
+            note.setUpdatedTime(time);
             dao.update(note);
         }
         setToolbarTitle(R.string.app_name);
