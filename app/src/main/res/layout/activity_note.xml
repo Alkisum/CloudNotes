@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.alkisum.android.notepad.activities.NoteActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -22,62 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/background_light"
-        android:elevation="2dp"
-        android:padding="16dp">
+    <include layout="@layout/content_note"/>
 
-        <TextView
-            android:id="@+id/note_text_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/lightPrimaryText"
-            android:textIsSelectable="true"/>
-
-        <EditText
-            android:id="@+id/note_edit_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/note_hint_title"
-            android:textColor="@color/lightPrimaryText"
-            android:textSize="14sp"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:background="@android:color/background_light"
-        android:elevation="2dp"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/note_text_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/lightPrimaryText"
-            android:textIsSelectable="true"/>
-
-        <EditText
-            android:id="@+id/note_edit_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top"
-            android:hint="@string/note_hint_content"
-            android:textColor="@color/lightPrimaryText"
-            android:textSize="14sp"/>
-
-    </RelativeLayout>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

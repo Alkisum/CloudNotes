@@ -1,9 +1,10 @@
 package com.alkisum.android.notepad.net;
 
 import android.app.ProgressDialog;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
 
 import com.alkisum.android.cloudops.file.json.JsonFile;
 import com.alkisum.android.cloudops.net.ConnectDialog;
@@ -11,6 +12,8 @@ import com.alkisum.android.cloudops.net.ConnectInfo;
 import com.alkisum.android.cloudops.net.owncloud.OcDownloader;
 import com.alkisum.android.cloudops.net.owncloud.OcUploader;
 import com.alkisum.android.notepad.R;
+import com.alkisum.android.notepad.activities.MainActivity;
+import com.alkisum.android.notepad.activities.NoteActivity;
 import com.alkisum.android.notepad.database.Inserter;
 import com.alkisum.android.notepad.dialogs.ErrorDialog;
 import com.alkisum.android.notepad.files.Json;
@@ -232,9 +235,15 @@ public class CloudOpsHelper implements
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
-                Toast.makeText(activity,
-                        activity.getString(R.string.upload_success_toast),
-                        Toast.LENGTH_LONG).show();
+                View view = activity.findViewById(android.R.id.content);
+                if (activity instanceof MainActivity) {
+                    view = activity.findViewById(R.id.main_list);
+                } else if (activity instanceof NoteActivity) {
+                    view = activity.findViewById(R.id.note_layout_main);
+                }
+                Snackbar.make(view,
+                        activity.getString(R.string.upload_success_feedback),
+                        Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -275,9 +284,9 @@ public class CloudOpsHelper implements
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
-                Toast.makeText(activity, activity.getString(
-                        R.string.download_no_file_toast),
-                        Toast.LENGTH_LONG).show();
+                Snackbar.make(activity.findViewById(R.id.main_fab),
+                        activity.getString(R.string.download_no_file_feedback),
+                        Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -340,9 +349,10 @@ public class CloudOpsHelper implements
                     if (progressDialog != null) {
                         progressDialog.dismiss();
                     }
-                    Toast.makeText(activity, activity.getString(
-                            R.string.download_no_file_toast),
-                            Toast.LENGTH_LONG).show();
+                    Snackbar.make(activity.findViewById(R.id.main_fab),
+                            activity.getString(
+                                    R.string.download_no_file_feedback),
+                            Snackbar.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -387,9 +397,9 @@ public class CloudOpsHelper implements
                 if (callback != null) {
                     callback.onRefreshList();
                 }
-                Toast.makeText(activity, activity.getString(
-                        R.string.download_success_toast),
-                        Toast.LENGTH_LONG).show();
+                Snackbar.make(activity.findViewById(R.id.main_fab),
+                        activity.getString(R.string.download_success_feedback),
+                        Snackbar.LENGTH_LONG).show();
             }
         });
     }
