@@ -61,6 +61,17 @@ public class MainActivity extends AppCompatActivity implements
     private CloudOpsHelper cloudOpsHelper;
 
     /**
+     * Drawer toggle.
+     */
+    private ActionBarDrawerToggle toggle;
+
+    /**
+     * Toolbar.
+     */
+    @BindView(R.id.main_toolbar)
+    Toolbar toolbar;
+
+    /**
      * List view listing the notes.
      */
     @BindView(R.id.main_list)
@@ -90,16 +101,12 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = ButterKnife.findById(this, R.id.main_toolbar);
+        toolbar = ButterKnife.findById(this, R.id.main_toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeAsUpIndicator(
-                    R.drawable.ic_close_white_24dp);
-        }
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.nav_drawer_open,
-                R.string.nav_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -155,9 +162,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public final boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                setEditMode(false);
-                return true;
             case R.id.action_download:
                 cloudOpsHelper.onDownloadAction();
                 return true;
@@ -249,15 +253,25 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void setEditMode(final boolean editMode) {
         if (editMode) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
             fab.setVisibility(View.GONE);
+            toggle.setDrawerIndicatorEnabled(false);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    setEditMode(false);
+                }
+            });
         } else {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
             fab.setVisibility(View.VISIBLE);
+            toggle.setDrawerIndicatorEnabled(true);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            });
         }
         listAdapter.setEditMode(editMode);
         listAdapter.notifyDataSetChanged();
