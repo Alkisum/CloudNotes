@@ -20,6 +20,7 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
+import com.alkisum.android.notepad.utils.Theme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,9 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Theme.setCurrentTheme(this);
+
         setContentView(R.layout.activity_note);
         ButterKnife.bind(this);
 

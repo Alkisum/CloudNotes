@@ -12,6 +12,7 @@ import com.alkisum.android.notepad.BuildConfig;
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.utils.Format;
 import com.alkisum.android.notepad.utils.Pref;
+import com.alkisum.android.notepad.utils.Theme;
 
 import java.util.Date;
 
@@ -29,6 +30,8 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Theme.setCurrentTheme(this);
 
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);

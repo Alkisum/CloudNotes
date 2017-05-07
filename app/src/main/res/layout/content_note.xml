@@ -22,7 +22,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:background="@android:color/background_light"
+            android:background="?colorCardBackground"
             android:elevation="2dp"
             android:padding="16dp">
 
@@ -30,7 +30,7 @@
                 android:id="@+id/note_text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/lightPrimaryText"
+                android:textColor="?colorPrimaryText"
                 android:textIsSelectable="true"/>
 
             <EditText
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/note_hint_title"
-                android:textColor="@color/lightPrimaryText"
+                android:textColor="?colorPrimaryText"
                 android:textSize="14sp"/>
 
         </RelativeLayout>
@@ -51,7 +51,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
+            android:background="?colorCardBackground"
             android:elevation="2dp"
             android:padding="16dp">
 
@@ -59,7 +59,7 @@
                 android:id="@+id/note_text_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/lightPrimaryText"
+                android:textColor="?colorPrimaryText"
                 android:textIsSelectable="true"/>
 
             <EditText
@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:gravity="top"
                 android:hint="@string/note_hint_content"
-                android:textColor="@color/lightPrimaryText"
+                android:textColor="?colorPrimaryText"
                 android:textSize="14sp"/>
 
         </RelativeLayout>

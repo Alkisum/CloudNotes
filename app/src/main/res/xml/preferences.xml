@@ -2,6 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        android:title="Interface">
+
+        <ListPreference
+            android:entries="@array/theme"
+            android:entryValues="@array/themeIds"
+            android:key="theme"
+            android:title="Theme"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="ownCloud">
 
         <SwitchPreference

@@ -16,6 +16,11 @@ import com.alkisum.android.cloudops.utils.CloudPref;
 public final class Pref {
 
     /**
+     * Preference key for the theme.
+     */
+    public static final String THEME = "theme";
+
+    /**
      * Preference key for about entry in Settings.
      */
     public static final String ABOUT = "about";
@@ -51,6 +56,9 @@ public final class Pref {
         SharedPreferences sharedPref = PreferenceManager
                 .getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();
+        if (!sharedPref.contains(THEME)) {
+            editor.putString(THEME, Theme.LIGHT);
+        }
         if (!sharedPref.contains(CloudPref.SAVE_OWNCLOUD_INFO)) {
             editor.putBoolean(CloudPref.SAVE_OWNCLOUD_INFO, true);
         }

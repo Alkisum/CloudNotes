@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import com.alkisum.android.cloudops.utils.CloudPref;
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.utils.Pref;
+import com.alkisum.android.notepad.utils.Theme;
 
 import butterknife.ButterKnife;
 
@@ -27,6 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Theme.setCurrentTheme(this);
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
@@ -85,6 +88,9 @@ public class SettingsActivity extends AppCompatActivity {
         public final void onSharedPreferenceChanged(
                 final SharedPreferences sharedPreferences, final String key) {
             switch (key) {
+                case Pref.THEME:
+                    Theme.reload(getActivity());
+                    break;
                 case CloudPref.SAVE_OWNCLOUD_INFO:
                     if (!sharedPreferences.getBoolean(
                             CloudPref.SAVE_OWNCLOUD_INFO, false)) {

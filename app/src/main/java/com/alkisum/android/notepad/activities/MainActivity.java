@@ -2,7 +2,9 @@ package com.alkisum.android.notepad.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -25,6 +27,8 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
+import com.alkisum.android.notepad.utils.Pref;
+import com.alkisum.android.notepad.utils.Theme;
 
 import java.util.List;
 
@@ -43,7 +47,8 @@ import butterknife.OnItemLongClick;
  */
 public class MainActivity extends AppCompatActivity implements
         CloudOpsHelper.CloudOpsHelperListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * List adapter for the list view listing the notes.
@@ -64,6 +69,17 @@ public class MainActivity extends AppCompatActivity implements
      * Drawer toggle.
      */
     private ActionBarDrawerToggle toggle;
+
+    /**
+     * Shared preferences.
+     */
+    private SharedPreferences sharedPref;
+
+    /**
+     * Flag set to true if the theme has been changed from the Settings
+     * activity, false otherwise.
+     */
+    private boolean themeChanged;
 
     /**
      * Toolbar.
@@ -98,8 +114,14 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Theme.setCurrentTheme(this);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.registerOnSharedPreferenceChangeListener(this);
 
         toolbar = ButterKnife.findById(this, R.id.main_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
@@ -123,7 +145,29 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected final void onStart() {
         super.onStart();
+        if (themeChanged) {
+            Theme.reload(this);
+            return;
+        }
         refreshList();
+    }
+
+    @Override
+    public final void onDestroy() {
+        super.onDestroy();
+        sharedPref.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public final void onSharedPreferenceChanged(
+            final SharedPreferences sharedPreferences, final String key) {
+        switch (key) {
+            case Pref.THEME:
+                themeChanged = true;
+                break;
+            default:
+                break;
+        }
     }
 
     /**
