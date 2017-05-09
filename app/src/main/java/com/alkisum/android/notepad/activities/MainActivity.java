@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements
     protected final void onStart() {
         super.onStart();
         if (themeChanged) {
+            themeChanged = false;
             Theme.reload(this);
             return;
         }

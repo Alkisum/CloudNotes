@@ -5,7 +5,7 @@
         android:title="Interface">
 
         <ListPreference
-            android:entries="@array/theme"
+            android:entries="@array/themes"
             android:entryValues="@array/themeIds"
             android:key="theme"
             android:title="Theme"/>

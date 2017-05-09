@@ -4,6 +4,7 @@ package com.alkisum.android.notepad.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -50,11 +51,20 @@ public class SettingsActivity extends AppCompatActivity {
     public static class SettingsFragment extends PreferenceFragment
             implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+        /**
+         * ListPreference for themes.
+         */
+        private ListPreference themePref;
+
         @Override
         public final void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.preferences);
+
+            // Theme
+            themePref = (ListPreference) findPreference(Pref.THEME);
+            themePref.setSummary(Theme.getSummary(getActivity()));
 
             // About
             Preference aboutPreference = findPreference(Pref.ABOUT);
@@ -89,6 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
                 final SharedPreferences sharedPreferences, final String key) {
             switch (key) {
                 case Pref.THEME:
+                    themePref.setSummary(Theme.getSummary(getActivity()));
                     Theme.reload(getActivity());
                     break;
                 case CloudPref.SAVE_OWNCLOUD_INFO:

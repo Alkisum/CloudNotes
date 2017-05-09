@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="theme">
+
+    <string-array name="themes">
         <item>Material Light</item>
         <item>Material Dark</item>
     </string-array>
+
     <string-array name="themeIds">
         <item>light</item>
         <item>dark</item>
     </string-array>
+
 </resources>

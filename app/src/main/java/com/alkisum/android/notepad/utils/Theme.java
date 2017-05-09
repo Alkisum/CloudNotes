@@ -1,6 +1,7 @@
 package com.alkisum.android.notepad.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -65,5 +66,26 @@ public final class Theme {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(intent);
         activity.overridePendingTransition(0, 0);
+    }
+
+    /**
+     * Get summary of current theme.
+     *
+     * @param context Context
+     * @return Summary of current theme
+     */
+    public static String getSummary(final Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        String theme = sharedPref.getString(Pref.THEME, LIGHT);
+        String[] themes = context.getResources().getStringArray(R.array.themes);
+        switch (theme) {
+            case LIGHT:
+                return themes[0];
+            case DARK:
+                return themes[1];
+            default:
+                return "";
+        }
     }
 }
