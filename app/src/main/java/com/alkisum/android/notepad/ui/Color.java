@@ -1,4 +1,4 @@
-package com.alkisum.android.notepad.utils;
+package com.alkisum.android.notepad.ui;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

@@ -1,4 +1,4 @@
-package com.alkisum.android.notepad.utils;
+package com.alkisum.android.notepad.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 
 import com.alkisum.android.notepad.R;
+import com.alkisum.android.notepad.utils.Pref;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -23,12 +24,12 @@ public final class ColorPref {
     /**
      * Default primary color key.
      */
-    static final String DEFAULT_PRIMARY_COLOR = "indigo";
+    public static final String DEFAULT_PRIMARY_COLOR = "indigo";
 
     /**
      * Default accent color key.
      */
-    static final String DEFAULT_ACCENT_COLOR = "pink";
+    public static final String DEFAULT_ACCENT_COLOR = "pink";
 
     /**
      * ColorPref constructor.

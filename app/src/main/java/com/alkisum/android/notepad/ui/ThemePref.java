@@ -1,4 +1,4 @@
-package com.alkisum.android.notepad.utils;
+package com.alkisum.android.notepad.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.support.annotation.ColorInt;
 import android.util.TypedValue;
 
 import com.alkisum.android.notepad.R;
+import com.alkisum.android.notepad.utils.Pref;
 
 /**
  * Utility class for the application theme.
@@ -33,7 +34,7 @@ public final class ThemePref {
     /**
      * Default theme.
      */
-    static final String DEFAULT_THEME = LIGHT;
+    public static final String DEFAULT_THEME = LIGHT;
 
     /**
      * ThemePref constructor.

@@ -10,10 +10,10 @@ import android.support.v7.widget.Toolbar;
 
 import com.alkisum.android.notepad.BuildConfig;
 import com.alkisum.android.notepad.R;
-import com.alkisum.android.notepad.utils.ColorPref;
+import com.alkisum.android.notepad.ui.ColorPref;
 import com.alkisum.android.notepad.utils.Format;
 import com.alkisum.android.notepad.utils.Pref;
-import com.alkisum.android.notepad.utils.ThemePref;
+import com.alkisum.android.notepad.ui.ThemePref;
 
 import java.util.Date;
 

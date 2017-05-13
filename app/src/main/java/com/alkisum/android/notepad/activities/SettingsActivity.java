@@ -13,9 +13,9 @@ import android.support.v7.widget.Toolbar;
 import com.alkisum.android.cloudops.utils.CloudPref;
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.dialogs.ColorPaletteDialog;
-import com.alkisum.android.notepad.utils.ColorPref;
+import com.alkisum.android.notepad.ui.ColorPref;
 import com.alkisum.android.notepad.utils.Pref;
-import com.alkisum.android.notepad.utils.ThemePref;
+import com.alkisum.android.notepad.ui.ThemePref;
 
 import butterknife.ButterKnife;
 

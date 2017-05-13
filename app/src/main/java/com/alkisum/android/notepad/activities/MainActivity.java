@@ -27,9 +27,9 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
-import com.alkisum.android.notepad.utils.ColorPref;
+import com.alkisum.android.notepad.ui.ColorPref;
 import com.alkisum.android.notepad.utils.Pref;
-import com.alkisum.android.notepad.utils.ThemePref;
+import com.alkisum.android.notepad.ui.ThemePref;
 
 import java.util.List;
 

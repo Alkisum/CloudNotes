@@ -12,8 +12,8 @@ import android.widget.GridView;
 
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.adapters.ColorGridAdapter;
-import com.alkisum.android.notepad.utils.Color;
-import com.alkisum.android.notepad.utils.ColorPref;
+import com.alkisum.android.notepad.ui.Color;
+import com.alkisum.android.notepad.ui.ColorPref;
 
 import java.util.ArrayList;
 import java.util.List;

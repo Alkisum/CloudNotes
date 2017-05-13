@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.model.Note;
-import com.alkisum.android.notepad.utils.ColorPref;
-import com.alkisum.android.notepad.utils.ThemePref;
+import com.alkisum.android.notepad.ui.ColorPref;
+import com.alkisum.android.notepad.ui.ThemePref;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.alkisum.android.cloudops.utils.CloudPref;
+import com.alkisum.android.notepad.ui.ColorPref;
+import com.alkisum.android.notepad.ui.ThemePref;
 
 /**
  * Class defining constants for SharedPreferences.

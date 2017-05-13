@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.alkisum.android.notepad.R;
-import com.alkisum.android.notepad.utils.Color;
+import com.alkisum.android.notepad.ui.Color;
 
 import java.util.List;
 
