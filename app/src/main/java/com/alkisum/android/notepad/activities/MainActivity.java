@@ -27,8 +27,9 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
+import com.alkisum.android.notepad.utils.ColorPref;
 import com.alkisum.android.notepad.utils.Pref;
-import com.alkisum.android.notepad.utils.Theme;
+import com.alkisum.android.notepad.utils.ThemePref;
 
 import java.util.List;
 
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Theme.setCurrentTheme(this);
+        ThemePref.applyTheme(this);
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -124,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements
         sharedPref.registerOnSharedPreferenceChangeListener(this);
 
         toolbar = ButterKnife.findById(this, R.id.main_toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
+        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
+        toolbar.setNavigationIcon(R.drawable.ic_close_black_24dp);
         setSupportActionBar(toolbar);
 
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -135,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements
         NavigationView navigationView = ButterKnife.findById(
                 this, R.id.main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(ThemePref.getNavIconTint(this));
+        navigationView.setItemTextColor(ThemePref.getNavTextColor(this));
 
         listAdapter = new NoteListAdapter(this, loadNotes());
         listView.setAdapter(listAdapter);
@@ -147,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onStart();
         if (themeChanged) {
             themeChanged = false;
-            Theme.reload(this);
+            Pref.reload(this);
             return;
         }
         refreshList();
@@ -163,6 +167,12 @@ public class MainActivity extends AppCompatActivity implements
     public final void onSharedPreferenceChanged(
             final SharedPreferences sharedPreferences, final String key) {
         switch (key) {
+            case Pref.PRIMARY_COLOR:
+                themeChanged = true;
+                break;
+            case Pref.ACCENT_COLOR:
+                themeChanged = true;
+                break;
             case Pref.THEME:
                 themeChanged = true;
                 break;

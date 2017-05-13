@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.model.Note;
+import com.alkisum.android.notepad.utils.ColorPref;
+import com.alkisum.android.notepad.utils.ThemePref;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
  * List adapter for the list view listing the notes.
  *
  * @author Alkisum
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class NoteListAdapter extends BaseAdapter {
@@ -144,11 +146,14 @@ public class NoteListAdapter extends BaseAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
 
         holder.title.setText(note.getTitle());
+        holder.title.setTextColor(ColorPref.getAccentColor(context));
         holder.content.setText(note.getContent());
         holder.time.setText(String.format("%s %s",
                 context.getString(R.string.note_last_update),
                 DATE_FORMAT.format(note.getUpdatedTime())));
         holder.checkBox.setChecked(note.isSelected());
+        holder.checkBox.setButtonTintList(
+                ThemePref.getNoteCheckBoxTint(context));
 
         if (editMode) {
             holder.checkBox.setVisibility(View.VISIBLE);

@@ -1,6 +1,8 @@
 package com.alkisum.android.notepad.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -19,6 +21,16 @@ public final class Pref {
      * Preference key for the theme.
      */
     public static final String THEME = "theme";
+
+    /**
+     * Preference key for the primary color.
+     */
+    public static final String PRIMARY_COLOR = "primaryColor";
+
+    /**
+     * Preference key for the accent color.
+     */
+    public static final String ACCENT_COLOR = "accentColor";
 
     /**
      * Preference key for about entry in Settings.
@@ -57,11 +69,30 @@ public final class Pref {
                 .getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();
         if (!sharedPref.contains(THEME)) {
-            editor.putString(THEME, Theme.LIGHT);
+            editor.putString(THEME, ThemePref.DEFAULT_THEME);
+        }
+        if (!sharedPref.contains(PRIMARY_COLOR)) {
+            editor.putString(PRIMARY_COLOR, ColorPref.DEFAULT_PRIMARY_COLOR);
+        }
+        if (!sharedPref.contains(ACCENT_COLOR)) {
+            editor.putString(ACCENT_COLOR, ColorPref.DEFAULT_ACCENT_COLOR);
         }
         if (!sharedPref.contains(CloudPref.SAVE_OWNCLOUD_INFO)) {
             editor.putBoolean(CloudPref.SAVE_OWNCLOUD_INFO, true);
         }
         editor.apply();
+    }
+
+    /**
+     * Reload the given activity to apply the new theme.
+     *
+     * @param activity Activity to reload
+     */
+    public static void reload(final Activity activity) {
+        activity.finish();
+        Intent intent = new Intent(activity, activity.getClass());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(0, 0);
     }
 }

@@ -10,6 +10,14 @@
             android:key="theme"
             android:title="Theme"/>
 
+        <Preference
+            android:key="primaryColor"
+            android:title="Primary Color"/>
+
+        <Preference
+            android:key="accentColor"
+            android:title="Accent Color"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

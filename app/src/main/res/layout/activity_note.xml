@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.alkisum.android.notepad.activities.NoteActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -14,13 +15,68 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/note_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            style="@style/Toolbar"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_note"/>
+    <RelativeLayout
+        android:id="@+id/note_layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="?colorCardBackground"
+        android:elevation="2dp"
+        android:padding="16dp">
 
-</android.support.design.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/note_text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?colorPrimaryText"
+            android:textIsSelectable="true"/>
+
+        <EditText
+            android:id="@+id/note_edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/note_hint_title"
+            android:textColor="?colorPrimaryText"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="?colorCardBackground"
+        android:elevation="2dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/note_text_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?colorPrimaryText"
+            android:textIsSelectable="true"/>
+
+        <EditText
+            android:id="@+id/note_edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:hint="@string/note_hint_content"
+            android:textColor="?colorPrimaryText"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

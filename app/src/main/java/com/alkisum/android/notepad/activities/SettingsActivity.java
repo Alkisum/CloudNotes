@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 
 import com.alkisum.android.cloudops.utils.CloudPref;
 import com.alkisum.android.notepad.R;
+import com.alkisum.android.notepad.dialogs.ColorPaletteDialog;
+import com.alkisum.android.notepad.utils.ColorPref;
 import com.alkisum.android.notepad.utils.Pref;
-import com.alkisum.android.notepad.utils.Theme;
+import com.alkisum.android.notepad.utils.ThemePref;
 
 import butterknife.ButterKnife;
 
@@ -30,12 +32,14 @@ public class SettingsActivity extends AppCompatActivity {
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Theme.setCurrentTheme(this);
+        ThemePref.applyTheme(this);
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
 
+        // Toolbar
         Toolbar toolbar = ButterKnife.findById(this, R.id.settings_toolbar);
+        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,6 +60,16 @@ public class SettingsActivity extends AppCompatActivity {
          */
         private ListPreference themePref;
 
+        /**
+         * Preference for primary color.
+         */
+        private Preference primaryColorPref;
+
+        /**
+         * Preference for accent color.
+         */
+        private Preference accentColorPref;
+
         @Override
         public final void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -64,11 +78,43 @@ public class SettingsActivity extends AppCompatActivity {
 
             // Theme
             themePref = (ListPreference) findPreference(Pref.THEME);
-            themePref.setSummary(Theme.getSummary(getActivity()));
+            themePref.setSummary(ThemePref.getSummary(getActivity()));
+
+            // Primary color
+            primaryColorPref = findPreference(Pref.PRIMARY_COLOR);
+            primaryColorPref.setSummary(ColorPref.getPrimarySummary(
+                    getActivity()));
+            primaryColorPref.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(
+                                final Preference preference) {
+                            showColorPaletteDialog(
+                                    ColorPaletteDialog.PRIMARY_USE);
+                            return false;
+                        }
+                    }
+            );
+
+            // Accent color
+            accentColorPref = findPreference(Pref.ACCENT_COLOR);
+            accentColorPref.setSummary(ColorPref.getAccentSummary(
+                    getActivity()));
+            accentColorPref.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(
+                                final Preference preference) {
+                            showColorPaletteDialog(
+                                    ColorPaletteDialog.ACCENT_USE);
+                            return false;
+                        }
+                    }
+            );
 
             // About
-            Preference aboutPreference = findPreference(Pref.ABOUT);
-            aboutPreference.setOnPreferenceClickListener(
+            Preference aboutPref = findPreference(Pref.ABOUT);
+            aboutPref.setOnPreferenceClickListener(
                     new Preference.OnPreferenceClickListener() {
                         @Override
                         public boolean onPreferenceClick(
@@ -99,8 +145,13 @@ public class SettingsActivity extends AppCompatActivity {
                 final SharedPreferences sharedPreferences, final String key) {
             switch (key) {
                 case Pref.THEME:
-                    themePref.setSummary(Theme.getSummary(getActivity()));
-                    Theme.reload(getActivity());
+                    Pref.reload(getActivity());
+                    break;
+                case Pref.PRIMARY_COLOR:
+                    Pref.reload(getActivity());
+                    break;
+                case Pref.ACCENT_COLOR:
+                    Pref.reload(getActivity());
                     break;
                 case CloudPref.SAVE_OWNCLOUD_INFO:
                     if (!sharedPreferences.getBoolean(
@@ -125,6 +176,18 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putString(CloudPref.PATH, "");
             editor.putString(CloudPref.USERNAME, "");
             editor.apply();
+        }
+
+        /**
+         * Show the dialog to choose the color to apply to the given usage.
+         *
+         * @param usage Usage of the color
+         */
+        private void showColorPaletteDialog(final int usage) {
+            ColorPaletteDialog d = ColorPaletteDialog.newInstance(usage);
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            d.show(activity.getSupportFragmentManager(),
+                    ColorPaletteDialog.FRAGMENT_TAG);
         }
     }
 }

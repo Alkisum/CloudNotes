@@ -20,7 +20,8 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
-import com.alkisum.android.notepad.utils.Theme;
+import com.alkisum.android.notepad.utils.ColorPref;
+import com.alkisum.android.notepad.utils.ThemePref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,12 +91,13 @@ public class NoteActivity extends AppCompatActivity {
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Theme.setCurrentTheme(this);
+        ThemePref.applyTheme(this);
 
         setContentView(R.layout.activity_note);
         ButterKnife.bind(this);
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.note_toolbar);
+        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -204,7 +206,7 @@ public class NoteActivity extends AppCompatActivity {
             contentTextView.setVisibility(View.GONE);
             titleEditText.setVisibility(View.VISIBLE);
             contentEditText.setVisibility(View.VISIBLE);
-            setToolbarIcon(R.drawable.ic_close_white_24dp);
+            setToolbarIcon(R.drawable.ic_close_black_24dp);
             showKeyboard();
         } else {
             hideKeyboard();
@@ -212,7 +214,7 @@ public class NoteActivity extends AppCompatActivity {
             contentEditText.setVisibility(View.GONE);
             titleTextView.setVisibility(View.VISIBLE);
             contentTextView.setVisibility(View.VISIBLE);
-            setToolbarIcon(R.drawable.ic_arrow_back_white_24dp);
+            setToolbarIcon(R.drawable.ic_arrow_back_black_24dp);
         }
         invalidateOptionsMenu();
     }

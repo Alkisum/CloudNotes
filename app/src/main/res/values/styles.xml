@@ -1,18 +1,14 @@
 <resources>
 
     <style name="MaterialLight" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="colorPrimaryText">#DE000000</item>
         <item name="colorSecondaryText">#8A000000</item>
         <item name="colorCardBackground">#FFFFFFFF</item>
     </style>
 
     <style name="MaterialDark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="colorPrimaryText">#FFFFFFFF</item>
         <item name="colorSecondaryText">#B3FFFFFF</item>
         <item name="colorCardBackground">#424242</item>
@@ -23,5 +19,181 @@
 
     <style name="AppTheme.PopupOverlay"
            parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:paddingTop">24dp</item>
+    </style>
+
+    <style name="pref_accent_light_red" parent="MaterialLight">
+        <item name="colorAccent">@color/red</item>
+    </style>
+
+    <style name="pref_accent_light_pink" parent="MaterialLight">
+        <item name="colorAccent">@color/pink</item>
+    </style>
+
+    <style name="pref_accent_light_purple" parent="MaterialLight">
+        <item name="colorAccent">@color/purple</item>
+    </style>
+
+    <style name="pref_accent_light_deep_purple" parent="MaterialLight">
+        <item name="colorAccent">@color/deep_purple</item>
+    </style>
+
+    <style name="pref_accent_light_indigo" parent="MaterialLight">
+        <item name="colorAccent">@color/indigo</item>
+    </style>
+
+    <style name="pref_accent_light_blue" parent="MaterialLight">
+        <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="pref_accent_light_light_blue" parent="MaterialLight">
+        <item name="colorAccent">@color/light_blue</item>
+    </style>
+
+    <style name="pref_accent_light_cyan" parent="MaterialLight">
+        <item name="colorAccent">@color/cyan</item>
+    </style>
+
+    <style name="pref_accent_light_teal" parent="MaterialLight">
+        <item name="colorAccent">@color/teal</item>
+    </style>
+
+    <style name="pref_accent_light_green" parent="MaterialLight">
+        <item name="colorAccent">@color/green</item>
+    </style>
+
+    <style name="pref_accent_light_light_green" parent="MaterialLight">
+        <item name="colorAccent">@color/light_green</item>
+    </style>
+
+    <style name="pref_accent_light_lime" parent="MaterialLight">
+        <item name="colorAccent">@color/lime</item>
+    </style>
+
+    <style name="pref_accent_light_yellow" parent="MaterialLight">
+        <item name="colorAccent">@color/yellow</item>
+    </style>
+
+    <style name="pref_accent_light_amber" parent="MaterialLight">
+        <item name="colorAccent">@color/amber</item>
+    </style>
+
+    <style name="pref_accent_light_orange" parent="MaterialLight">
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="pref_accent_light_deep_orange" parent="MaterialLight">
+        <item name="colorAccent">@color/deep_orange</item>
+    </style>
+
+    <style name="pref_accent_light_brown" parent="MaterialLight">
+        <item name="colorAccent">@color/brown</item>
+    </style>
+
+    <style name="pref_accent_light_grey" parent="MaterialLight">
+        <item name="colorAccent">@color/grey</item>
+    </style>
+
+    <style name="pref_accent_light_blue_grey" parent="MaterialLight">
+        <item name="colorAccent">@color/blue_grey</item>
+    </style>
+
+    <style name="pref_accent_light_black" parent="MaterialLight">
+        <item name="colorAccent">@color/black</item>
+    </style>
+
+    <style name="pref_accent_light_white" parent="MaterialLight">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="pref_accent_dark_red" parent="MaterialDark">
+        <item name="colorAccent">@color/red</item>
+    </style>
+
+    <style name="pref_accent_dark_pink" parent="MaterialDark">
+        <item name="colorAccent">@color/pink</item>
+    </style>
+
+    <style name="pref_accent_dark_purple" parent="MaterialDark">
+        <item name="colorAccent">@color/purple</item>
+    </style>
+
+    <style name="pref_accent_dark_deep_purple" parent="MaterialDark">
+        <item name="colorAccent">@color/deep_purple</item>
+    </style>
+
+    <style name="pref_accent_dark_indigo" parent="MaterialDark">
+        <item name="colorAccent">@color/indigo</item>
+    </style>
+
+    <style name="pref_accent_dark_blue" parent="MaterialDark">
+        <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="pref_accent_dark_light_blue" parent="MaterialDark">
+        <item name="colorAccent">@color/light_blue</item>
+    </style>
+
+    <style name="pref_accent_dark_cyan" parent="MaterialDark">
+        <item name="colorAccent">@color/cyan</item>
+    </style>
+
+    <style name="pref_accent_dark_teal" parent="MaterialDark">
+        <item name="colorAccent">@color/teal</item>
+    </style>
+
+    <style name="pref_accent_dark_green" parent="MaterialDark">
+        <item name="colorAccent">@color/green</item>
+    </style>
+
+    <style name="pref_accent_dark_light_green" parent="MaterialDark">
+        <item name="colorAccent">@color/light_green</item>
+    </style>
+
+    <style name="pref_accent_dark_lime" parent="MaterialDark">
+        <item name="colorAccent">@color/lime</item>
+    </style>
+
+    <style name="pref_accent_dark_yellow" parent="MaterialDark">
+        <item name="colorAccent">@color/yellow</item>
+    </style>
+
+    <style name="pref_accent_dark_amber" parent="MaterialDark">
+        <item name="colorAccent">@color/amber</item>
+    </style>
+
+    <style name="pref_accent_dark_orange" parent="MaterialDark">
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="pref_accent_dark_deep_orange" parent="MaterialDark">
+        <item name="colorAccent">@color/deep_orange</item>
+    </style>
+
+    <style name="pref_accent_dark_brown" parent="MaterialDark">
+        <item name="colorAccent">@color/brown</item>
+    </style>
+
+    <style name="pref_accent_dark_grey" parent="MaterialDark">
+        <item name="colorAccent">@color/grey</item>
+    </style>
+
+    <style name="pref_accent_dark_blue_grey" parent="MaterialDark">
+        <item name="colorAccent">@color/blue_grey</item>
+    </style>
+
+    <style name="pref_accent_dark_black" parent="MaterialDark">
+        <item name="colorAccent">@color/black</item>
+    </style>
+
+    <style name="pref_accent_dark_white" parent="MaterialDark">
+        <item name="colorAccent">@color/white</item>
+    </style>
 
 </resources>

@@ -6,7 +6,6 @@
     android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.alkisum.android.notepad.activities.MainActivity"
     tools:openDrawer="start">
 
@@ -21,9 +20,7 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                style="@style/Toolbar"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </android.support.design.widget.AppBarLayout>
@@ -46,8 +43,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:itemIconTint="@drawable/nav_drawer_icon_tint"
-        app:itemTextColor="@drawable/nav_drawer_text_color"
         app:menu="@menu/menu_nav_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">Notepad</string>
 
-    <!-- Dialogs -->
-    <string name="delete_note_title">Delete note?</string>
-    <string name="delete_notes_title">Delete notes?</string>
-    <string name="delete_notes_message">Deleting notes cannot be undone</string>
-
     <!-- Actions -->
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
@@ -14,6 +9,7 @@
     <string name="action_share">Share</string>
     <string name="action_download">Download</string>
     <string name="action_upload">Upload</string>
+    <string name="action_default">Default</string>
 
     <!-- MainActivity -->
     <string name="main_no_note">No notes available</string>
@@ -52,5 +48,15 @@
 
     <!-- SettingsActivity-->
     <string name="settings_title">Settings</string>
+
+    <!-- Delete dialog -->
+    <string name="delete_note_title">Delete note?</string>
+    <string name="delete_notes_title">Delete notes?</string>
+    <string name="delete_notes_message">Deleting notes cannot be undone</string>
+
+    <!-- ColorPaletteDialog -->
+    <string name="palette_primary_title">Choose primary color</string>
+    <string name="palette_accent_title">Choose accent color</string>
+    <string name="palette_img_desc">Color</string>
 
 </resources>
