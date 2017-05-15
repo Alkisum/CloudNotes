@@ -20,7 +20,7 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
-import com.alkisum.android.notepad.ui.ColorPref;
+import com.alkisum.android.notepad.ui.AppBar;
 import com.alkisum.android.notepad.ui.ThemePref;
 
 import java.util.ArrayList;
@@ -96,8 +96,8 @@ public class NoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = ButterKnife.findById(this, R.id.note_toolbar);
-        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
+        // Toolbar
+        Toolbar toolbar = AppBar.inflate(this, R.id.note_stub_app_bar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -27,9 +27,9 @@ import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
-import com.alkisum.android.notepad.ui.ColorPref;
-import com.alkisum.android.notepad.utils.Pref;
+import com.alkisum.android.notepad.ui.AppBar;
 import com.alkisum.android.notepad.ui.ThemePref;
+import com.alkisum.android.notepad.utils.Pref;
 
 import java.util.List;
 
@@ -85,8 +85,7 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * Toolbar.
      */
-    @BindView(R.id.main_toolbar)
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
     /**
      * List view listing the notes.
@@ -124,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.registerOnSharedPreferenceChangeListener(this);
 
-        toolbar = ButterKnife.findById(this, R.id.main_toolbar);
-        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
+        // Toolbar
+        toolbar = AppBar.inflate(this, R.id.main_stub_app_bar);
         toolbar.setNavigationIcon(R.drawable.ic_close_black_24dp);
         setSupportActionBar(toolbar);
 

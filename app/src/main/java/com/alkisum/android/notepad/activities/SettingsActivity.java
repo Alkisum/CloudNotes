@@ -13,9 +13,10 @@ import android.support.v7.widget.Toolbar;
 import com.alkisum.android.cloudops.utils.CloudPref;
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.dialogs.ColorPaletteDialog;
+import com.alkisum.android.notepad.ui.AppBar;
 import com.alkisum.android.notepad.ui.ColorPref;
-import com.alkisum.android.notepad.utils.Pref;
 import com.alkisum.android.notepad.ui.ThemePref;
+import com.alkisum.android.notepad.utils.Pref;
 
 import butterknife.ButterKnife;
 
@@ -38,8 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // Toolbar
-        Toolbar toolbar = ButterKnife.findById(this, R.id.settings_toolbar);
-        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
+        Toolbar toolbar = AppBar.inflate(this, R.id.settings_stub_app_bar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

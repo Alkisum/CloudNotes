@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorPrimaryText" format="reference|color"/>
-    <attr name="colorSecondaryText" format="reference|color"/>
-    <attr name="colorCardBackground" format="reference|color"/>
+    <attr name="textColorPrimary" format="reference|color"/>
+    <attr name="textColorSecondary" format="reference|color"/>
+    <attr name="bgColorCard" format="reference|color"/>
 </resources>

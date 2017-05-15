@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.alkisum.android.notepad.activities.NoteActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <ViewStub
+        android:id="@+id/note_stub_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/note_toolbar"
-            style="@style/Toolbar"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-    </android.support.design.widget.AppBarLayout>
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/note_layout_main"
@@ -28,7 +20,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="?colorCardBackground"
+        android:background="?bgColorCard"
         android:elevation="2dp"
         android:padding="16dp">
 
@@ -36,7 +28,7 @@
             android:id="@+id/note_text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?colorPrimaryText"
+            android:textColor="?textColorPrimary"
             android:textIsSelectable="true"/>
 
         <EditText
@@ -44,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/note_hint_title"
-            android:textColor="?colorPrimaryText"
+            android:textColor="?textColorPrimary"
             android:textSize="14sp"/>
 
     </RelativeLayout>
@@ -57,7 +49,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:background="?colorCardBackground"
+        android:background="?bgColorCard"
         android:elevation="2dp"
         android:padding="16dp">
 
@@ -65,7 +57,7 @@
             android:id="@+id/note_text_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?colorPrimaryText"
+            android:textColor="?textColorPrimary"
             android:textIsSelectable="true"/>
 
         <EditText
@@ -74,7 +66,7 @@
             android:layout_height="match_parent"
             android:gravity="top"
             android:hint="@string/note_hint_content"
-            android:textColor="?colorPrimaryText"
+            android:textColor="?textColorPrimary"
             android:textSize="14sp"/>
 
     </RelativeLayout>

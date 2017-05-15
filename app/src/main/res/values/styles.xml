@@ -2,25 +2,34 @@
 
     <style name="MaterialLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="colorPrimaryText">#DE000000</item>
-        <item name="colorSecondaryText">#8A000000</item>
-        <item name="colorCardBackground">#FFFFFFFF</item>
+        <item name="textColorPrimary">@color/text_color_primary_light</item>
+        <item name="textColorSecondary">@color/text_color_secondary_light</item>
+        <item name="bgColorCard">@color/bg_color_card_light</item>
     </style>
 
     <style name="MaterialDark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="colorPrimaryText">#FFFFFFFF</item>
-        <item name="colorSecondaryText">#B3FFFFFF</item>
-        <item name="colorCardBackground">#424242</item>
+        <item name="textColorPrimary">@color/text_color_primary_dark</item>
+        <item name="textColorSecondary">@color/text_color_secondary_dark</item>
+        <item name="bgColorCard">@color/bg_color_card_dark</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay"
-           parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlayLight" parent="Platform.ThemeOverlay.AppCompat">
+        <item name="android:colorControlNormal">@color/text_color_secondary_light</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlayDark" parent="Platform.ThemeOverlay.AppCompat">
+        <item name="android:colorControlNormal">@color/text_color_secondary_dark</item>
+        <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
+    </style>
 
     <style name="AppTheme.PopupOverlay"
            parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="Toolbar">
+    <style name="toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentTop">true</item>

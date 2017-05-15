@@ -98,7 +98,7 @@ public final class ThemePref {
     private static int getPrimaryTextColor(final Context context) {
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.colorPrimaryText, typedValue, true);
+        theme.resolveAttribute(R.attr.textColorPrimary, typedValue, true);
         @ColorInt int color = typedValue.data;
         return color;
     }
@@ -112,7 +112,7 @@ public final class ThemePref {
     private static int getSecondaryTextColor(final Context context) {
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.colorSecondaryText, typedValue, true);
+        theme.resolveAttribute(R.attr.textColorSecondary, typedValue, true);
         @ColorInt int color = typedValue.data;
         return color;
     }

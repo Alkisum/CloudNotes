@@ -10,10 +10,10 @@ import android.support.v7.widget.Toolbar;
 
 import com.alkisum.android.notepad.BuildConfig;
 import com.alkisum.android.notepad.R;
-import com.alkisum.android.notepad.ui.ColorPref;
+import com.alkisum.android.notepad.ui.AppBar;
+import com.alkisum.android.notepad.ui.ThemePref;
 import com.alkisum.android.notepad.utils.Format;
 import com.alkisum.android.notepad.utils.Pref;
-import com.alkisum.android.notepad.ui.ThemePref;
 
 import java.util.Date;
 
@@ -37,8 +37,8 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = ButterKnife.findById(this, R.id.about_toolbar);
-        toolbar.setBackgroundColor(ColorPref.getPrimaryColor(this));
+        // Toolbar
+        Toolbar toolbar = AppBar.inflate(this, R.id.about_stub_app_bar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

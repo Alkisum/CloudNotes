@@ -38,6 +38,11 @@ public class Color {
     private final int darkThemeStyle;
 
     /**
+     * AppBar layout id attached to the color (primary).
+     */
+    private final int appBarLayout;
+
+    /**
      * Color constructor.
      *
      * @param key             Color key
@@ -45,14 +50,17 @@ public class Color {
      * @param code            Color hex code
      * @param lightThemeStyle Light theme attached to the color (accent)
      * @param darkThemeStyle  Dark theme attached to the color (accent)
+     * @param appBarLayout    AppBar layout id attached to the color (primary)
      */
     Color(final String key, final String name, final int code,
-          final int lightThemeStyle, final int darkThemeStyle) {
+          final int lightThemeStyle, final int darkThemeStyle,
+          final int appBarLayout) {
         this.key = key;
         this.name = name;
         this.code = code;
         this.lightThemeStyle = lightThemeStyle;
         this.darkThemeStyle = darkThemeStyle;
+        this.appBarLayout = appBarLayout;
     }
 
     /**
@@ -96,5 +104,12 @@ public class Color {
      */
     final int getDarkThemeStyle() {
         return darkThemeStyle;
+    }
+
+    /**
+     * @return AppBar layout id attached to the color (primary)
+     */
+    final int getAppBarLayout() {
+        return appBarLayout;
     }
 }
