@@ -36,14 +36,22 @@ public class ColorGridAdapter extends BaseAdapter {
     private final List<Color> colors;
 
     /**
+     * Key of the current color.
+     */
+    private final String currentColorKey;
+
+    /**
      * ColorGridAdapter constructor.
      *
-     * @param context Context
-     * @param colors  List of available colors
+     * @param context         Context
+     * @param colors          List of available colors
+     * @param currentColorKey Key of the current color
      */
-    public ColorGridAdapter(final Context context, final List<Color> colors) {
+    public ColorGridAdapter(final Context context, final List<Color> colors,
+                            final String currentColorKey) {
         this.context = context;
         this.colors = colors;
+        this.currentColorKey = currentColorKey;
     }
 
     @Override
@@ -76,8 +84,12 @@ public class ColorGridAdapter extends BaseAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
 
         GradientDrawable gradientDrawable = (GradientDrawable)
-                holder.image.getBackground();
+                holder.color.getBackground();
         gradientDrawable.setColor(color.getColor(context));
+
+        if (color.getKey().equals(currentColorKey)) {
+            holder.tick.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -90,8 +102,14 @@ public class ColorGridAdapter extends BaseAdapter {
         /**
          * ImageView showing a color.
          */
-        @BindView(R.id.color_palette_grid_image)
-        ImageView image;
+        @BindView(R.id.color_palette_grid_color)
+        ImageView color;
+
+        /**
+         * ImageView showing a tick indicating the current color.
+         */
+        @BindView(R.id.color_palette_grid_tick)
+        ImageView tick;
 
         /**
          * ViewHolder constructor.

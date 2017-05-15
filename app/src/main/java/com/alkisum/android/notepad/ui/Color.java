@@ -66,7 +66,7 @@ public class Color {
     /**
      * @return Color key
      */
-    final String getKey() {
+    public final String getKey() {
         return key;
     }
 

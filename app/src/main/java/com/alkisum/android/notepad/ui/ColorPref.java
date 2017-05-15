@@ -161,6 +161,32 @@ public final class ColorPref {
     }
 
     /**
+     * Get primary color key from the shared preferences.
+     *
+     * @param context Context
+     * @return Key of the primary color
+     */
+    public static String getPrimaryKey(final Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPref.getString(Pref.PRIMARY_COLOR,
+                DEFAULT_PRIMARY_COLOR);
+    }
+
+    /**
+     * Get accent color key from the shared preferences.
+     *
+     * @param context Context
+     * @return Key of the accent color
+     */
+    public static String getAccentKey(final Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPref.getString(Pref.ACCENT_COLOR,
+                DEFAULT_ACCENT_COLOR);
+    }
+
+    /**
      * Get primary color from the shared preferences.
      *
      * @param context Context
@@ -169,9 +195,9 @@ public final class ColorPref {
     static int getPrimaryColor(final Context context) {
         SharedPreferences sharedPref = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        String id = sharedPref.getString(Pref.PRIMARY_COLOR,
+        String key = sharedPref.getString(Pref.PRIMARY_COLOR,
                 DEFAULT_PRIMARY_COLOR);
-        return ContextCompat.getColor(context, COLORS.get(id).getCode());
+        return ContextCompat.getColor(context, COLORS.get(key).getCode());
     }
 
     /**
@@ -198,9 +224,9 @@ public final class ColorPref {
     public static int getAccentColor(final Context context) {
         SharedPreferences sharedPref = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        String id = sharedPref.getString(Pref.ACCENT_COLOR,
+        String key = sharedPref.getString(Pref.ACCENT_COLOR,
                 DEFAULT_ACCENT_COLOR);
-        return ContextCompat.getColor(context, COLORS.get(id).getCode());
+        return ContextCompat.getColor(context, COLORS.get(key).getCode());
     }
 
     /**
@@ -215,32 +241,6 @@ public final class ColorPref {
                 .getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(Pref.ACCENT_COLOR, accent.getKey());
-        editor.apply();
-    }
-
-    /**
-     * Save the default primary color to the shared preferences.
-     *
-     * @param context Context
-     */
-    public static void applyDefaultPrimary(final Context context) {
-        SharedPreferences sharedPref = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(Pref.PRIMARY_COLOR, DEFAULT_PRIMARY_COLOR);
-        editor.apply();
-    }
-
-    /**
-     * Save the default accent color to the shared preferences.
-     *
-     * @param context Context
-     */
-    public static void applyDefaultAccent(final Context context) {
-        SharedPreferences sharedPref = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(Pref.ACCENT_COLOR, DEFAULT_ACCENT_COLOR);
         editor.apply();
     }
 
@@ -287,5 +287,31 @@ public final class ColorPref {
                 DEFAULT_PRIMARY_COLOR);
         return COLORS.get(key).getAppBarLayout();
 
+    }
+
+    /**
+     * Save the default primary color to the shared preferences.
+     *
+     * @param context Context
+     */
+    public static void applyDefaultPrimary(final Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Pref.PRIMARY_COLOR, DEFAULT_PRIMARY_COLOR);
+        editor.apply();
+    }
+
+    /**
+     * Save the default accent color to the shared preferences.
+     *
+     * @param context Context
+     */
+    public static void applyDefaultAccent(final Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Pref.ACCENT_COLOR, DEFAULT_ACCENT_COLOR);
+        editor.apply();
     }
 }

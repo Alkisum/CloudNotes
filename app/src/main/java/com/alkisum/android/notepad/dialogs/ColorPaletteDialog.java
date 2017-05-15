@@ -93,8 +93,15 @@ public class ColorPaletteDialog extends DialogFragment {
 
         ButterKnife.bind(this, view);
 
+        String currentColorKey = "";
+        if (usage == PRIMARY_USE) {
+            currentColorKey = ColorPref.getPrimaryKey(getActivity());
+        } else if (usage == ACCENT_USE) {
+            currentColorKey = ColorPref.getAccentKey(getActivity());
+        }
 
-        ColorGridAdapter adapter = new ColorGridAdapter(getActivity(), colors);
+        ColorGridAdapter adapter = new ColorGridAdapter(getActivity(), colors,
+                currentColorKey);
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

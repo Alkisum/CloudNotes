@@ -57,6 +57,7 @@
     <!-- ColorPaletteDialog -->
     <string name="palette_primary_title">Choose primary color</string>
     <string name="palette_accent_title">Choose accent color</string>
-    <string name="palette_img_desc">Color</string>
+    <string name="palette_color_desc">Color</string>
+    <string name="palette_tick_desc">Current color</string>
 
 </resources>
