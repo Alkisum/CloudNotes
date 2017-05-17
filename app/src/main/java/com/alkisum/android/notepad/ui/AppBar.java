@@ -5,6 +5,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewStub;
 
+import com.alkisum.android.notepad.R;
+
 import butterknife.ButterKnife;
 
 /**
@@ -37,6 +39,11 @@ public final class AppBar {
         AppBarLayout appBarLayout = (AppBarLayout) stub.inflate();
         Toolbar toolbar = (Toolbar) appBarLayout.getChildAt(0);
         toolbar.setBackgroundColor(ColorPref.getPrimaryColor(activity));
+        if (!ThemePref.isLightStatusBarEnabled(activity)) {
+            int top = activity.getResources().getDimensionPixelOffset(
+                    R.dimen.status_bar_height);
+            toolbar.setPadding(0, top, 0, 0);
+        }
         return toolbar;
     }
 }

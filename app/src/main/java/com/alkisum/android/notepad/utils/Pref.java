@@ -35,6 +35,11 @@ public final class Pref {
     public static final String ACCENT_COLOR = "accentColor";
 
     /**
+     * Preference key for the light status bar.
+     */
+    public static final String LIGHT_STATUS_BAR = "lightStatusBar";
+
+    /**
      * Preference key for about entry in Settings.
      */
     public static final String ABOUT = "about";
@@ -78,6 +83,10 @@ public final class Pref {
         }
         if (!sharedPref.contains(ACCENT_COLOR)) {
             editor.putString(ACCENT_COLOR, ColorPref.DEFAULT_ACCENT_COLOR);
+        }
+        if (!sharedPref.contains(LIGHT_STATUS_BAR)) {
+            editor.putBoolean(LIGHT_STATUS_BAR,
+                    ThemePref.DEFAULT_LIGHT_STATUS_BAR);
         }
         if (!sharedPref.contains(CloudPref.SAVE_OWNCLOUD_INFO)) {
             editor.putBoolean(CloudPref.SAVE_OWNCLOUD_INFO, true);

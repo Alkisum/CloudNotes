@@ -3,10 +3,13 @@ package com.alkisum.android.notepad.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -112,6 +115,15 @@ public class SettingsActivity extends AppCompatActivity {
                     }
             );
 
+            // Do not show light status bar preference for API < 23
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                PreferenceCategory category = (PreferenceCategory)
+                        findPreference("interface");
+                SwitchPreference lightStatusBar = (SwitchPreference)
+                        findPreference("lightStatusBar");
+                category.removePreference(lightStatusBar);
+            }
+
             // About
             Preference aboutPref = findPreference(Pref.ABOUT);
             aboutPref.setOnPreferenceClickListener(
@@ -151,6 +163,9 @@ public class SettingsActivity extends AppCompatActivity {
                     Pref.reload(getActivity());
                     break;
                 case Pref.ACCENT_COLOR:
+                    Pref.reload(getActivity());
+                    break;
+                case Pref.LIGHT_STATUS_BAR:
                     Pref.reload(getActivity());
                     break;
                 case CloudPref.SAVE_OWNCLOUD_INFO:

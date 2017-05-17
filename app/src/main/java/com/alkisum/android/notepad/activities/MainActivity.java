@@ -166,13 +166,16 @@ public class MainActivity extends AppCompatActivity implements
     public final void onSharedPreferenceChanged(
             final SharedPreferences sharedPreferences, final String key) {
         switch (key) {
+            case Pref.THEME:
+                themeChanged = true;
+                break;
             case Pref.PRIMARY_COLOR:
                 themeChanged = true;
                 break;
             case Pref.ACCENT_COLOR:
                 themeChanged = true;
                 break;
-            case Pref.THEME:
+            case Pref.LIGHT_STATUS_BAR:
                 themeChanged = true;
                 break;
             default:

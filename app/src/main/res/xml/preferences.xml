@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        android:key="interface"
         android:title="Interface">
 
         <ListPreference
@@ -17,6 +18,10 @@
         <Preference
             android:key="accentColor"
             android:title="Accent Color"/>
+
+        <SwitchPreference
+            android:key="lightStatusBar"
+            android:title="Light status bar"/>
 
     </PreferenceCategory>
 
