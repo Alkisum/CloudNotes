@@ -10,6 +10,7 @@
     <string name="action_download">Download</string>
     <string name="action_upload">Upload</string>
     <string name="action_default">Default</string>
+    <string name="action_undo">Undo</string>
 
     <!-- MainActivity -->
     <string name="main_no_note">No notes available</string>
@@ -50,9 +51,8 @@
     <string name="settings_title">Settings</string>
 
     <!-- Delete dialog -->
-    <string name="delete_note_title">Delete note?</string>
-    <string name="delete_notes_title">Delete notes?</string>
-    <string name="delete_notes_message">Deleting notes cannot be undone</string>
+    <string name="delete_note_snackbar">Note deleted</string>
+    <string name="delete_notes_snackbar">Notes deleted</string>
 
     <!-- ColorPaletteDialog -->
     <string name="palette_primary_title">Choose primary color</string>

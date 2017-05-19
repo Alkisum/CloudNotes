@@ -1,7 +1,6 @@
 package com.alkisum.android.notepad.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,12 +15,12 @@ import android.widget.TextView;
 
 import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.database.Db;
-import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
 import com.alkisum.android.notepad.ui.AppBar;
 import com.alkisum.android.notepad.ui.ThemePref;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,12 @@ public class NoteActivity extends AppCompatActivity {
      * Argument for the note id.
      */
     static final String ARG_NOTE_ID = "arg_note_id";
+
+    /**
+     * Argument for the JSON representation of the note, sent to the
+     * MainActivity when the note has been deleted.
+     */
+    static final String ARG_NOTE_JSON = "arg_note_json";
 
     /**
      * Flag set to true if the edit mode is on, false otherwise.
@@ -158,17 +163,7 @@ public class NoteActivity extends AppCompatActivity {
                 setEditMode(true);
                 return true;
             case R.id.action_delete:
-                ConfirmDialog.show(this,
-                        getString(R.string.delete_note_title),
-                        getString(R.string.delete_notes_message),
-                        getString(R.string.action_delete),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog,
-                                                final int which) {
-                                deleteNote();
-                            }
-                        });
+                deleteNote();
                 return true;
             case R.id.action_share:
                 share();
@@ -248,6 +243,10 @@ public class NoteActivity extends AppCompatActivity {
     private void deleteNote() {
         if (note != null) {
             dao.delete(note);
+            // Notify MainActivity that a note has been deleted
+            Intent intent = new Intent();
+            intent.putExtra(ARG_NOTE_JSON, new Gson().toJson(note));
+            setResult(RESULT_OK, intent);
         }
         finish();
     }

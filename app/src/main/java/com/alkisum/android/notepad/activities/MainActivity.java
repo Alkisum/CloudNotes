@@ -1,6 +1,5 @@
 package com.alkisum.android.notepad.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,13 +23,13 @@ import com.alkisum.android.notepad.R;
 import com.alkisum.android.notepad.adapters.NoteListAdapter;
 import com.alkisum.android.notepad.database.Db;
 import com.alkisum.android.notepad.database.Notes;
-import com.alkisum.android.notepad.dialogs.ConfirmDialog;
 import com.alkisum.android.notepad.model.Note;
 import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
 import com.alkisum.android.notepad.ui.AppBar;
 import com.alkisum.android.notepad.ui.ThemePref;
 import com.alkisum.android.notepad.utils.Pref;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements
         CloudOpsHelper.CloudOpsHelperListener,
         NavigationView.OnNavigationItemSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
+
+    /**
+     * Request code for result from NoteActivity.
+     */
+    private static final int NOTE_DELETED_REQUEST = 649;
 
     /**
      * List adapter for the list view listing the notes.
@@ -223,17 +228,10 @@ public class MainActivity extends AppCompatActivity implements
                 cloudOpsHelper.onDownloadAction();
                 return true;
             case R.id.action_delete:
-                ConfirmDialog.show(this,
-                        getString(R.string.delete_notes_title),
-                        getString(R.string.delete_notes_message),
-                        getString(R.string.action_delete),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog,
-                                                final int which) {
-                                deleteNotes();
-                            }
-                        });
+                final List<Note> selectedNotes = Notes.getSelectedNotes();
+                if (!selectedNotes.isEmpty()) {
+                    deleteNotes(selectedNotes);
+                }
                 return true;
             case R.id.action_upload:
                 List<Note> notes = Notes.getSelectedNotes();
@@ -254,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements
     @OnClick(R.id.main_fab)
     public final void onFabClicked() {
         Intent intent = new Intent(this, NoteActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, NOTE_DELETED_REQUEST);
     }
 
     /**
@@ -271,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             Intent intent = new Intent(this, NoteActivity.class);
             intent.putExtra(NoteActivity.ARG_NOTE_ID, id);
-            startActivity(intent);
+            startActivityForResult(intent, NOTE_DELETED_REQUEST);
         }
     }
 
@@ -291,16 +289,25 @@ public class MainActivity extends AppCompatActivity implements
 
     /**
      * Delete selected notes.
+     *
+     * @param selectedNotes List of selected notes to delete
      */
-    private void deleteNotes() {
-        for (Note note : listAdapter.getNotes()) {
-            if (note.isSelected()) {
-                dao.delete(note);
-            }
+    private void deleteNotes(final List<Note> selectedNotes) {
+        for (Note note : selectedNotes) {
+            dao.delete(note);
         }
         setEditMode(false);
         listAdapter.setNotes(loadNotes());
         listAdapter.notifyDataSetChanged();
+        Snackbar.make(fab, R.string.delete_notes_snackbar, Snackbar.LENGTH_LONG)
+                .setAction(R.string.action_undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        dao.insertInTx(selectedNotes);
+                        listAdapter.setNotes(loadNotes());
+                        listAdapter.notifyDataSetChanged();
+                    }
+                }).show();
     }
 
     /**
@@ -383,5 +390,28 @@ public class MainActivity extends AppCompatActivity implements
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected final void onActivityResult(final int requestCode,
+                                          final int resultCode,
+                                          final Intent data) {
+        if (requestCode == NOTE_DELETED_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String json = data.getStringExtra(NoteActivity.ARG_NOTE_JSON);
+                final Note note = new Gson().fromJson(json, Note.class);
+                Snackbar.make(fab, R.string.delete_note_snackbar,
+                        Snackbar.LENGTH_LONG)
+                        .setAction(R.string.action_undo,
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(final View v) {
+                                        dao.insert(note);
+                                        listAdapter.setNotes(loadNotes());
+                                        listAdapter.notifyDataSetChanged();
+                                    }
+                                }).show();
+            }
+        }
     }
 }
