@@ -8,7 +8,6 @@
 
     <android.support.v7.widget.Toolbar
         style="@style/toolbar"
-        android:colorControlNormal="@color/text_color_secondary_light"
         app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
 </android.support.design.widget.AppBarLayout>

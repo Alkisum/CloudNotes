@@ -14,14 +14,14 @@
         <item name="bgColorCard">@color/bg_color_card_dark</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlayLight" parent="Platform.ThemeOverlay.AppCompat">
+    <style name="AppTheme.AppBarOverlayLight" parent="ThemeOverlay.AppCompat">
         <item name="android:colorControlNormal">@color/text_color_secondary_light</item>
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_light</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlayDark" parent="Platform.ThemeOverlay.AppCompat">
-        <item name="android:colorControlNormal">@color/text_color_secondary_dark</item>
+    <style name="AppTheme.AppBarOverlayDark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:colorControlNormal">@color/text_color_primary_dark</item>
         <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_color_secondary_dark</item>
     </style>
