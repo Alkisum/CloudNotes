@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alkisum.android.notepad.R;
@@ -20,6 +21,7 @@ import com.alkisum.android.notepad.model.NoteDao;
 import com.alkisum.android.notepad.net.CloudOpsHelper;
 import com.alkisum.android.notepad.ui.AppBar;
 import com.alkisum.android.notepad.ui.ThemePref;
+import com.alkisum.android.notepad.utils.KeyboardUtil;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -92,6 +94,17 @@ public class NoteActivity extends AppCompatActivity {
     @BindView(R.id.note_edit_content)
     EditText contentEditText;
 
+    /**
+     * Activity root layout.
+     */
+    @BindView(R.id.note_layout_root)
+    LinearLayout rootLayout;
+
+    /**
+     * Helper to move the content edit text up when the keyboard is shown.
+     */
+    private KeyboardUtil keyboardUtil;
+
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +128,12 @@ public class NoteActivity extends AppCompatActivity {
             note = Db.getInstance().getDaoSession().getNoteDao().load(id);
         }
 
+        // Enable KeyboardUtil only when the windowTranslucentStatus is enabled
+        if (!ThemePref.isLightStatusBarEnabled(this)) {
+            keyboardUtil = new KeyboardUtil(this, rootLayout);
+            keyboardUtil.enable();
+        }
+
         if (note != null) {
             // Read mode
             setEditMode(false);
@@ -125,6 +144,14 @@ public class NoteActivity extends AppCompatActivity {
         }
 
         cloudOpsHelper = new CloudOpsHelper(this);
+    }
+
+    @Override
+    protected final void onDestroy() {
+        super.onDestroy();
+        if (!ThemePref.isLightStatusBarEnabled(this)) {
+            keyboardUtil.disable();
+        }
     }
 
     @Override

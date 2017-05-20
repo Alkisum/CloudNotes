@@ -204,7 +204,7 @@ public final class ThemePref {
      * @param context Context
      * @return true if the light status bar is enabled, false otherwise
      */
-    static boolean isLightStatusBarEnabled(final Context context) {
+    public static boolean isLightStatusBarEnabled(final Context context) {
         SharedPreferences sharedPref = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPref.getBoolean(Pref.LIGHT_STATUS_BAR,
