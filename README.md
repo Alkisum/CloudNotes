@@ -1,6 +1,6 @@
 # Notepad
 
-Notepad is an Android app based on Material Design guidelines that enables the user to write notes and save them on their device.
+Notepad is an Android app based on Material Design guidelines that enables the user to write notes and save them on their devices.
 
 
 ## Requirements
@@ -18,12 +18,17 @@ Notepad is an Android app based on Material Design guidelines that enables the u
 
 + List your notes
 + Add, edit, delete, share a note
++ Upload your notes as JSON files to your ownCloud server
++ Download your notes as JSON files from your ownCloud server
++ Customise your app interface
 
 
 ## Used libraries
 
 + [greenDAO](https://github.com/greenrobot/greenDAO)
 + [Butter Knife](https://github.com/JakeWharton/butterknife)
++ [ownCloud Android Library](https://github.com/owncloud/android-library)
++ [Gson](https://github.com/google/gson)
 
 
 ## License
