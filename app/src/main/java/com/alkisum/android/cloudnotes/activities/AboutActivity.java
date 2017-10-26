@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Activity listing information about the application.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.0
  */
 public class AboutActivity extends AppCompatActivity {

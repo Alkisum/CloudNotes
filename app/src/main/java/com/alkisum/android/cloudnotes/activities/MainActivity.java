@@ -25,7 +25,7 @@ import com.alkisum.android.cloudnotes.database.Db;
 import com.alkisum.android.cloudnotes.database.Notes;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
-import com.alkisum.android.cloudnotes.net.CloudOpsHelper;
+import com.alkisum.android.cloudnotes.net.CloudLibHelper;
 import com.alkisum.android.cloudnotes.ui.AppBar;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 import com.alkisum.android.cloudnotes.utils.Pref;
@@ -43,11 +43,11 @@ import butterknife.OnItemLongClick;
  * Main activity listing the notes stored in the database.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.0
  */
 public class MainActivity extends AppCompatActivity implements
-        CloudOpsHelper.CloudOpsHelperListener,
+        CloudLibHelper.CloudLibHelperListener,
         NavigationView.OnNavigationItemSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements
     private final NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
 
     /**
-     * CloudOpsHelper instance that implements all CloudOps interfaces.
+     * CloudLibHelper instance that implements all CloudOps interfaces.
      */
-    private CloudOpsHelper cloudOpsHelper;
+    private CloudLibHelper cloudLibHelper;
 
     /**
      * Drawer toggle.
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements
         listAdapter = new NoteListAdapter(this, loadNotes());
         listView.setAdapter(listAdapter);
 
-        cloudOpsHelper = new CloudOpsHelper(this);
+        cloudLibHelper = new CloudLibHelper(this);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements
     public final boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_download:
-                cloudOpsHelper.onDownloadAction();
+                cloudLibHelper.onDownloadAction();
                 return true;
             case R.id.action_delete:
                 final List<Note> selectedNotes = Notes.getSelectedNotes();
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
             case R.id.action_upload:
                 List<Note> notes = Notes.getSelectedNotes();
-                cloudOpsHelper.onUploadAction(notes);
+                cloudLibHelper.onUploadAction(notes);
                 return true;
             case R.id.action_select_all:
                 selectAll();

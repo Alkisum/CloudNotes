@@ -21,7 +21,7 @@ import com.alkisum.android.cloudnotes.utils.Pref;
  * Utility class for the application theme.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public final class ThemePref {

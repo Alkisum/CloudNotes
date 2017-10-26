@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * Dialog showing the color palette in Settings.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public class ColorPaletteDialog extends DialogFragment {

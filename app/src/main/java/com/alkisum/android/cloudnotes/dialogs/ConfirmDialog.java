@@ -8,7 +8,7 @@ import android.content.DialogInterface;
  * Class to show a simple confirmation dialog.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.0
  */
 public final class ConfirmDialog {

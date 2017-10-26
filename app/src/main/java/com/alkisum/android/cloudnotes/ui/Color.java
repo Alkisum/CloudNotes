@@ -7,7 +7,7 @@ import android.support.v4.content.ContextCompat;
  * Class defining a color used for the app views.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public class Color {

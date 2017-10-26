@@ -10,7 +10,7 @@ import android.view.ViewTreeObserver;
  * keyboard is shown to allow long lists with editTextViews.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public class KeyboardUtil {

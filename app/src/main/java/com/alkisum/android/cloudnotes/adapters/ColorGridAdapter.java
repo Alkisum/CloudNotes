@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Adapter for the grid showing the color palette.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public class ColorGridAdapter extends BaseAdapter {

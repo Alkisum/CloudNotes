@@ -15,7 +15,7 @@ import java.util.List;
  * Task to insert notes in database from JSON objects.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public class Inserter extends AsyncTask<Void, Void, Void> {

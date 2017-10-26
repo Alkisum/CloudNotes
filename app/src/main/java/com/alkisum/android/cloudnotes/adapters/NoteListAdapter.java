@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * List adapter for the list view listing the notes.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.0
  */
 public class NoteListAdapter extends BaseAdapter {

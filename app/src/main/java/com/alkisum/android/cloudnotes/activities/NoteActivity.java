@@ -18,7 +18,7 @@ import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.database.Db;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
-import com.alkisum.android.cloudnotes.net.CloudOpsHelper;
+import com.alkisum.android.cloudnotes.net.CloudLibHelper;
 import com.alkisum.android.cloudnotes.ui.AppBar;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 import com.alkisum.android.cloudnotes.utils.KeyboardUtil;
@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
  * Activity showing a note and enabling the user to make actions on it.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.0
  */
 public class NoteActivity extends AppCompatActivity {
@@ -66,9 +66,9 @@ public class NoteActivity extends AppCompatActivity {
     private final NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
 
     /**
-     * CloudOpsHelper instance that implements all CloudOps interfaces.
+     * CloudLibHelper instance that implements all CloudOps interfaces.
      */
-    private CloudOpsHelper cloudOpsHelper;
+    private CloudLibHelper cloudLibHelper;
 
     /**
      * TextView containing the note title.
@@ -143,7 +143,7 @@ public class NoteActivity extends AppCompatActivity {
             setEditMode(true);
         }
 
-        cloudOpsHelper = new CloudOpsHelper(this);
+        cloudLibHelper = new CloudLibHelper(this);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class NoteActivity extends AppCompatActivity {
             case R.id.action_upload:
                 List<Note> notes = new ArrayList<>();
                 notes.add(note);
-                cloudOpsHelper.onUploadAction(notes);
+                cloudLibHelper.onUploadAction(notes);
                 return true;
             default:
                 break;

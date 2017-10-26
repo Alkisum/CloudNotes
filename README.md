@@ -26,6 +26,7 @@ Notepad is an Android app based on Material Design guidelines that enables the u
 ## Used libraries
 
 + [greenDAO](https://github.com/greenrobot/greenDAO)
++ [EventBus](https://github.com/greenrobot/EventBus)
 + [Butter Knife](https://github.com/JakeWharton/butterknife)
 + [ownCloud Android Library](https://github.com/owncloud/android-library)
 + [Gson](https://github.com/google/gson)

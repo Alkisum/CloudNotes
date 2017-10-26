@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
  * Utility class to inflate the AppBarLayout according to the current theme.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
 public final class AppBar {

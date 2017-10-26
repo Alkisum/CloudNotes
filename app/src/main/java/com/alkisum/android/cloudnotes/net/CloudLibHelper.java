@@ -9,8 +9,6 @@ import android.view.View;
 import com.alkisum.android.cloudlib.file.json.JsonFile;
 import com.alkisum.android.cloudlib.net.ConnectDialog;
 import com.alkisum.android.cloudlib.net.ConnectInfo;
-import com.alkisum.android.cloudlib.net.owncloud.OcDownloader;
-import com.alkisum.android.cloudlib.net.owncloud.OcUploader;
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.activities.MainActivity;
 import com.alkisum.android.cloudnotes.activities.NoteActivity;
@@ -27,20 +25,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class implementing CloudOps interfaces.
+ * Class implementing CloudLib interfaces.
  *
  * @author Alkisum
- * @version 1.1
+ * @version 2.0
  * @since 1.1
  */
-public class CloudOpsHelper implements
-        ConnectDialog.ConnectDialogListener, OcUploader.OcUploaderListener,
-        OcDownloader.OcDownloaderListener, Inserter.InserterListener {
+public class CloudLibHelper implements
+        ConnectDialog.ConnectDialogListener, Inserter.InserterListener {
 
     /**
      * Log tag.
      */
-    private static final String TAG = "CloudOpsHelper";
+    private static final String TAG = "CloudLibHelper";
 
     /**
      * Operation id for download.
@@ -58,10 +55,10 @@ public class CloudOpsHelper implements
     private final AppCompatActivity activity;
 
     /**
-     * CloudOpsHelperListener instance, can be null if the activity does not
-     * implement CloudOpsHelperListener.
+     * CloudLibHelperListener instance, can be null if the activity does not
+     * implement CloudLibHelperListener.
      */
-    private CloudOpsHelperListener callback;
+    private CloudLibHelperListener callback;
 
     /**
      * Progress dialog to show the progress of operations.
@@ -85,13 +82,13 @@ public class CloudOpsHelper implements
      *
      * @param activity Activity to help
      */
-    public CloudOpsHelper(final AppCompatActivity activity) {
+    public CloudLibHelper(final AppCompatActivity activity) {
         this.activity = activity;
         try {
-            callback = (CloudOpsHelperListener) activity;
+            callback = (CloudLibHelperListener) activity;
         } catch (ClassCastException e) {
             Log.w(TAG, activity.getClass().getSimpleName()
-                    + " does not implement CloudOpsHelperListener");
+                    + " does not implement CloudLibHelperListener");
         }
     }
 
@@ -420,9 +417,9 @@ public class CloudOpsHelper implements
     }
 
     /**
-     * Listener for CloudOpsHelper.
+     * Listener for CloudLibHelper.
      */
-    public interface CloudOpsHelperListener {
+    public interface CloudLibHelperListener {
 
         /**
          * Called when the activity list must be refreshed.
