@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.alkisum.android.notepad.activities.NoteActivity">
+    tools:context="com.alkisum.android.cloudnotes.activities.NoteActivity">
 
     <ViewStub
         android:id="@+id/note_stub_app_bar"

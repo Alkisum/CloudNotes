@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notepad</string>
+    <string name="app_name">CloudNotes</string>
 
     <!-- Actions -->
     <string name="action_delete">Delete</string>

@@ -18,8 +18,8 @@ Notepad is an Android app based on Material Design guidelines that enables the u
 
 + List your notes
 + Add, edit, delete, share a note
-+ Upload your notes as JSON files to your ownCloud server
-+ Download your notes as JSON files from your ownCloud server
++ Upload your notes as JSON files to your ownCloud server or Nextcloud server
++ Download your notes as JSON files from your ownCloud server or Nextcloud server
 + Customise your app interface
 
 

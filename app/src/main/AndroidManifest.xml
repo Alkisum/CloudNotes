@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.alkisum.android.notepad">
+          package="com.alkisum.android.cloudnotes">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:name=".app.NotePadApp"
+        android:name="com.alkisum.android.cloudnotes.app.NotePadApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/MaterialLight">
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.alkisum.android.cloudnotes.activities.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,20 +23,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.NoteActivity"
+            android:name="com.alkisum.android.cloudnotes.activities.NoteActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName="com.alkisum.android.cloudnotes.activities.MainActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name="com.alkisum.android.cloudnotes.activities.SettingsActivity"
             android:label="@string/settings_title"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName="com.alkisum.android.cloudnotes.activities.MainActivity">
         </activity>
         <activity
-            android:name=".activities.AboutActivity"
+            android:name="com.alkisum.android.cloudnotes.activities.AboutActivity"
             android:label="@string/about_title"
-            android:parentActivityName=".activities.SettingsActivity">
+            android:parentActivityName="com.alkisum.android.cloudnotes.activities.SettingsActivity">
         </activity>
     </application>
 
