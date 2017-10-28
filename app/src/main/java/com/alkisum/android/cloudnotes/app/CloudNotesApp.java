@@ -12,7 +12,7 @@ import com.alkisum.android.cloudnotes.utils.Pref;
  * @version 2.0
  * @since 1.0
  */
-public class NotePadApp extends Application {
+public class CloudNotesApp extends Application {
 
     @Override
     public final void onCreate() {

@@ -26,7 +26,7 @@ public final class Db {
     /**
      * Database name.
      */
-    private static final String NAME = "notepad.db";
+    private static final String NAME = "cloudnotes.db";
 
     /**
      * DaoSession instance.

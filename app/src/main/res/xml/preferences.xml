@@ -39,7 +39,7 @@
 
         <Preference
             android:key="about"
-            android:title="About Notepad"/>
+            android:title="About CloudNotes"/>
 
     </PreferenceCategory>
 

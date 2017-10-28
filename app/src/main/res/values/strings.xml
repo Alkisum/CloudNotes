@@ -26,7 +26,7 @@
 
     <!-- About -->
     <string name="about_title">About</string>
-    <string name="about_github">https://github.com/Alkisum/Notepad/</string>
+    <string name="about_github">https://github.com/Alkisum/CloudNotes/</string>
 
     <!-- General OwnCloud Operations -->
     <string name="operation_progress_init_msg">Preparing&#8230; (0%)</string>
