@@ -43,7 +43,7 @@ public class Uploader {
      * @param context      Context
      * @param connectInfo  Connection information
      * @param intent       Intent for notification
-     * @param notes     List of note to upload
+     * @param notes        List of note to upload
      * @param subscriberId Subscriber id allowed to process the events
      * @throws JSONException An error occurred while building the JSON object
      */

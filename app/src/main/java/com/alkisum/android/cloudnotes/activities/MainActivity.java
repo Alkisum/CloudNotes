@@ -169,8 +169,7 @@ public class MainActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = ButterKnife.findById(
-                this, R.id.main_nav_view);
+        NavigationView navigationView = findViewById(R.id.main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(ThemePref.getNavIconTint(this));
         navigationView.setItemTextColor(ThemePref.getNavTextColor(this));

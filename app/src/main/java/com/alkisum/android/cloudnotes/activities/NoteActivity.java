@@ -395,8 +395,10 @@ public class NoteActivity extends AppCompatActivity implements
                 titleEditText.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(
                         Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(titleEditText,
-                        InputMethodManager.SHOW_FORCED);
+                if (imm != null) {
+                    imm.showSoftInput(titleEditText,
+                            InputMethodManager.SHOW_FORCED);
+                }
             }
         }, 100);
     }
@@ -409,7 +411,9 @@ public class NoteActivity extends AppCompatActivity implements
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 

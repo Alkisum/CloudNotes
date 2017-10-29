@@ -7,8 +7,6 @@ import android.view.ViewStub;
 
 import com.alkisum.android.cloudnotes.R;
 
-import butterknife.ButterKnife;
-
 /**
  * Utility class to inflate the AppBarLayout according to the current theme.
  *
@@ -34,7 +32,7 @@ public final class AppBar {
      * @return Inflated toolbar
      */
     public static Toolbar inflate(final Activity activity, final int stubId) {
-        ViewStub stub = ButterKnife.findById(activity, stubId);
+        ViewStub stub = activity.findViewById(stubId);
         stub.setLayoutResource(ColorPref.getAppBarLayout(activity));
         AppBarLayout appBarLayout = (AppBarLayout) stub.inflate();
         Toolbar toolbar = (Toolbar) appBarLayout.getChildAt(0);
