@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,17 +13,28 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alkisum.android.cloudlib.events.JsonFileWriterEvent;
+import com.alkisum.android.cloudlib.events.UploadEvent;
+import com.alkisum.android.cloudlib.net.ConnectDialog;
+import com.alkisum.android.cloudlib.net.ConnectInfo;
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.database.Db;
+import com.alkisum.android.cloudnotes.dialogs.ErrorDialog;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
-import com.alkisum.android.cloudnotes.net.CloudLibHelper;
+import com.alkisum.android.cloudnotes.net.Uploader;
 import com.alkisum.android.cloudnotes.ui.AppBar;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 import com.alkisum.android.cloudnotes.utils.KeyboardUtil;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +49,8 @@ import butterknife.ButterKnife;
  * @version 2.0
  * @since 1.0
  */
-public class NoteActivity extends AppCompatActivity {
+public class NoteActivity extends AppCompatActivity implements
+        ConnectDialog.ConnectDialogListener {
 
     /**
      * Argument for the note id.
@@ -49,6 +62,16 @@ public class NoteActivity extends AppCompatActivity {
      * MainActivity when the note has been deleted.
      */
     static final String ARG_NOTE_JSON = "arg_note_json";
+
+    /**
+     * Subscriber id to use when receiving event.
+     */
+    private static final int SUBSCRIBER_ID = 354;
+
+    /**
+     * Operation id for upload.
+     */
+    private static final int UPLOAD_OPERATION = 1;
 
     /**
      * Flag set to true if the edit mode is on, false otherwise.
@@ -64,11 +87,6 @@ public class NoteActivity extends AppCompatActivity {
      * Note DAO.
      */
     private final NoteDao dao = Db.getInstance().getDaoSession().getNoteDao();
-
-    /**
-     * CloudLibHelper instance that implements all CloudOps interfaces.
-     */
-    private CloudLibHelper cloudLibHelper;
 
     /**
      * TextView containing the note title.
@@ -99,6 +117,12 @@ public class NoteActivity extends AppCompatActivity {
      */
     @BindView(R.id.note_layout_root)
     LinearLayout rootLayout;
+
+    /**
+     * Progress bar to show the progress of operations.
+     */
+    @BindView(R.id.note_progressbar)
+    ProgressBar progressBar;
 
     /**
      * Helper to move the content edit text up when the keyboard is shown.
@@ -142,8 +166,18 @@ public class NoteActivity extends AppCompatActivity {
             setToolbarTitle(R.string.note_toolbar_title_create);
             setEditMode(true);
         }
+    }
 
-        cloudLibHelper = new CloudLibHelper(this);
+    @Override
+    public final void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public final void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -196,9 +230,11 @@ public class NoteActivity extends AppCompatActivity {
                 share();
                 break;
             case R.id.action_upload:
-                List<Note> notes = new ArrayList<>();
-                notes.add(note);
-                cloudLibHelper.onUploadAction(notes);
+                ConnectDialog connectDialogUpload =
+                        ConnectDialog.newInstance(UPLOAD_OPERATION);
+                connectDialogUpload.setCallback(this);
+                connectDialogUpload.show(getSupportFragmentManager(),
+                        ConnectDialog.FRAGMENT_TAG);
                 return true;
             default:
                 break;
@@ -278,6 +314,33 @@ public class NoteActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public final void onSubmit(final int operation,
+                               final ConnectInfo connectInfo) {
+        if (operation == UPLOAD_OPERATION) {
+            try {
+                Intent intent = new Intent(this, NoteActivity.class);
+                intent.putExtra(ARG_NOTE_ID, note.getId());
+                List<Note> notes = new ArrayList<>();
+                notes.add(note);
+                new Uploader(getApplicationContext(), connectInfo, intent,
+                        notes, SUBSCRIBER_ID);
+            } catch (JSONException e) {
+                ErrorDialog.show(this,
+                        getString(R.string.upload_failure_title),
+                        e.getMessage());
+            }
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setIndeterminate(true);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     /**
      * Share the note using the Intent object.
      */
@@ -347,6 +410,61 @@ public class NoteActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * Triggered on JSON file writer event.
+     *
+     * @param event JSON file writer event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public final void onJsonFileWriterEvent(final JsonFileWriterEvent event) {
+        if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
+            return;
+        }
+        switch (event.getResult()) {
+            case JsonFileWriterEvent.OK:
+                progressBar.setVisibility(View.VISIBLE);
+                break;
+            case JsonFileWriterEvent.ERROR:
+                ErrorDialog.show(this,
+                        getString(R.string.upload_writing_failure_title),
+                        event.getException().getMessage());
+                progressBar.setVisibility(View.GONE);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Triggered on upload event.
+     *
+     * @param event Upload event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public final void onUploadEvent(final UploadEvent event) {
+        if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
+            return;
+        }
+        switch (event.getResult()) {
+            case UploadEvent.UPLOADING:
+                progressBar.setVisibility(View.VISIBLE);
+                break;
+            case UploadEvent.OK:
+                Snackbar.make(findViewById(R.id.note_layout_main),
+                        R.string.upload_success_snackbar,
+                        Snackbar.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+                break;
+            case UploadEvent.ERROR:
+                ErrorDialog.show(this, getString(
+                        R.string.upload_failure_title), event.getMessage());
+                progressBar.setVisibility(View.GONE);
+                break;
+            default:
+                break;
         }
     }
 }

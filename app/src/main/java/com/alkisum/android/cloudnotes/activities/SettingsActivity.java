@@ -168,9 +168,9 @@ public class SettingsActivity extends AppCompatActivity {
                 case Pref.LIGHT_STATUS_BAR:
                     Pref.reload(getActivity());
                     break;
-                case CloudPref.SAVE_OWNCLOUD_INFO:
+                case CloudPref.SAVE_CLOUD_INFO:
                     if (!sharedPreferences.getBoolean(
-                            CloudPref.SAVE_OWNCLOUD_INFO, false)) {
+                            CloudPref.SAVE_CLOUD_INFO, false)) {
                         discardOwnCloudInfo(sharedPreferences);
                     }
                     break;

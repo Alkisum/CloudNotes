@@ -2,10 +2,12 @@ package com.alkisum.android.cloudnotes.database;
 
 import android.os.AsyncTask;
 
+import com.alkisum.android.cloudnotes.events.InsertEvent;
 import com.alkisum.android.cloudnotes.files.Json;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,11 +21,6 @@ import java.util.List;
  * @since 1.1
  */
 public class Inserter extends AsyncTask<Void, Void, Void> {
-
-    /**
-     * Listener to get notification when the task finishes.
-     */
-    private final InserterListener callback;
 
     /**
      * List of JSON objects to read.
@@ -43,12 +40,9 @@ public class Inserter extends AsyncTask<Void, Void, Void> {
     /**
      * Inserter constructor.
      *
-     * @param callback    Listener of the task
      * @param jsonObjects List of JSON objects to read
      */
-    public Inserter(final InserterListener callback,
-                    final List<JSONObject> jsonObjects) {
-        this.callback = callback;
+    public Inserter(final List<JSONObject> jsonObjects) {
         this.jsonObjects = jsonObjects;
         noteDao = Db.getInstance().getDaoSession().getNoteDao();
     }
@@ -68,9 +62,10 @@ public class Inserter extends AsyncTask<Void, Void, Void> {
     @Override
     protected final void onPostExecute(final Void param) {
         if (exception == null) {
-            callback.onDataInserted();
+            EventBus.getDefault().post(new InsertEvent(InsertEvent.OK));
         } else {
-            callback.onInsertDataFailed(exception);
+            EventBus.getDefault().post(new InsertEvent(InsertEvent.ERROR,
+                    exception));
         }
     }
 
@@ -106,24 +101,5 @@ public class Inserter extends AsyncTask<Void, Void, Void> {
                 jsonNote.getLong(Json.NOTE_CREATED_TIME),
                 jsonNote.getLong(Json.NOTE_UPDATED_TIME));
         noteDao.insert(note);
-    }
-
-    /**
-     * Listener for the Inserter.
-     */
-    public interface InserterListener {
-
-        /**
-         * Called when the JSON files are read and the note's data inserted
-         * into the database.
-         */
-        void onDataInserted();
-
-        /**
-         * Called when an exception has been caught during the task.
-         *
-         * @param exception Exception caught
-         */
-        void onInsertDataFailed(Exception exception);
     }
 }
