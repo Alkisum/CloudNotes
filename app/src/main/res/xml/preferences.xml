@@ -26,10 +26,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="ownCloud">
+        android:title="Cloud">
 
         <SwitchPreference
-            android:key="saveOwnCloudInfo"
+            android:key="saveCloudInfo"
             android:title="Save connection information"/>
 
     </PreferenceCategory>

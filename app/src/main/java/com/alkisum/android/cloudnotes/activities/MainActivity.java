@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -117,6 +118,12 @@ public class MainActivity extends AppCompatActivity implements
     private Toolbar toolbar;
 
     /**
+     * SwipeRefreshLayout for list view.
+     */
+    @BindView(R.id.main_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    /**
      * List view listing the notes.
      */
     @BindView(R.id.main_list)
@@ -176,6 +183,16 @@ public class MainActivity extends AppCompatActivity implements
         listAdapter = new NoteListAdapter(this, loadNotes());
         listView.setAdapter(listAdapter);
 
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        refreshList();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
         // Register onCreate to receive events even when NoteActivity is open
         EventBus.getDefault().register(this);
     }
@@ -223,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements
      * Reload the list of notes and notify the list adapter.
      */
     private void refreshList() {
+        if (listAdapter.isEditMode()) {
+            setEditMode(false);
+        }
         List<Note> notes = loadNotes();
         if (notes.isEmpty()) {
             listView.setVisibility(View.GONE);
