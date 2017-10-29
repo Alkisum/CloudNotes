@@ -2,19 +2,17 @@ package com.alkisum.android.cloudnotes.database;
 
 import android.os.AsyncTask;
 
+import com.alkisum.android.cloudlib.file.txt.TxtFile;
 import com.alkisum.android.cloudnotes.events.InsertEvent;
-import com.alkisum.android.cloudnotes.files.Json;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
 /**
- * Task to insert notes in database from JSON objects.
+ * Task to insert notes in database from TXT files.
  *
  * @author Alkisum
  * @version 2.0
@@ -23,9 +21,9 @@ import java.util.List;
 public class Inserter extends AsyncTask<Void, Void, Void> {
 
     /**
-     * List of JSON objects to read.
+     * List of TXT files to read.
      */
-    private final List<JSONObject> jsonObjects;
+    private final List<TxtFile> txtFiles;
 
     /**
      * Note dao.
@@ -33,73 +31,56 @@ public class Inserter extends AsyncTask<Void, Void, Void> {
     private final NoteDao noteDao;
 
     /**
-     * Exception that can be set when an exception is caught during the task.
-     */
-    private Exception exception;
-
-    /**
      * Inserter constructor.
      *
-     * @param jsonObjects List of JSON objects to read
+     * @param txtFiles List of TXT files to read
      */
-    public Inserter(final List<JSONObject> jsonObjects) {
-        this.jsonObjects = jsonObjects;
+    public Inserter(final List<TxtFile> txtFiles) {
+        this.txtFiles = txtFiles;
         noteDao = Db.getInstance().getDaoSession().getNoteDao();
     }
 
     @Override
     protected final Void doInBackground(final Void... params) {
-        try {
-            for (JSONObject jsonObject : jsonObjects) {
-                buildNoteFromJson(jsonObject);
+        for (TxtFile txtFile : txtFiles) {
+            Note note = Notes.getNoteByTitle(txtFile.getBaseName());
+            if (note != null) {
+                noteDao.update(updateNoteFromTxtFile(note, txtFile));
+            } else {
+                noteDao.insert(buildNewNoteFromTxtFile(txtFile));
             }
-        } catch (JSONException e) {
-            exception = e;
         }
         return null;
     }
 
     @Override
     protected final void onPostExecute(final Void param) {
-        if (exception == null) {
-            EventBus.getDefault().post(new InsertEvent(InsertEvent.OK));
-        } else {
-            EventBus.getDefault().post(new InsertEvent(InsertEvent.ERROR,
-                    exception));
-        }
+        EventBus.getDefault().post(new InsertEvent(InsertEvent.OK));
     }
 
     /**
-     * Get note data from JSON and insert notes into database.
+     * Get note data from TXT file and insert notes into database.
      *
-     * @param jsonBase JSONObject the structure is based on
-     * @throws JSONException An error occurred while parsing the JSON object
+     * @param txtFile TXT file to get the data from
+     * @return Note built from TXT file
      */
-    private void buildNoteFromJson(final JSONObject jsonBase)
-            throws JSONException {
-        int version = jsonBase.getInt(Json.VERSION);
-        switch (version) {
-            case 1:
-                fromVersion1(jsonBase);
-                break;
-            default:
-                break;
-        }
+    private Note buildNewNoteFromTxtFile(final TxtFile txtFile) {
+        return new Note(null,
+                txtFile.getBaseName(),
+                txtFile.getContent(),
+                txtFile.getModifiedTime());
     }
 
     /**
-     * Build note from Json file version 1.
+     * Update the given note with the given TXT file.
      *
-     * @param jsonBase JSONObject the structure is based on
-     * @throws JSONException An error occurred while parsing the JSON object
+     * @param note    Note to update
+     * @param txtFile TXT file to use to update the note
+     * @return Updated note
      */
-    private void fromVersion1(final JSONObject jsonBase) throws JSONException {
-        JSONObject jsonNote = jsonBase.getJSONObject(Json.NOTE);
-        Note note = new Note(null,
-                jsonNote.getString(Json.NOTE_TITLE),
-                jsonNote.getString(Json.NOTE_CONTENT),
-                jsonNote.getLong(Json.NOTE_CREATED_TIME),
-                jsonNote.getLong(Json.NOTE_UPDATED_TIME));
-        noteDao.insert(note);
+    private Note updateNoteFromTxtFile(final Note note, final TxtFile txtFile) {
+        note.setContent(txtFile.getContent());
+        note.setUpdatedTime(txtFile.getModifiedTime());
+        return note;
     }
 }

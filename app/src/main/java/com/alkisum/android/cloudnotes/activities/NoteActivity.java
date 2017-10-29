@@ -16,12 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alkisum.android.cloudlib.events.JsonFileWriterEvent;
+import com.alkisum.android.cloudlib.events.TxtFileWriterEvent;
 import com.alkisum.android.cloudlib.events.UploadEvent;
 import com.alkisum.android.cloudlib.net.ConnectDialog;
 import com.alkisum.android.cloudlib.net.ConnectInfo;
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.database.Db;
+import com.alkisum.android.cloudnotes.database.Notes;
 import com.alkisum.android.cloudnotes.dialogs.ErrorDialog;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
@@ -34,7 +35,6 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -287,13 +287,14 @@ public class NoteActivity extends AppCompatActivity implements
             note = new Note(null,
                     titleEditText.getText().toString(),
                     contentEditText.getText().toString(),
-                    time,
                     time);
+            Notes.setUniqueTitle(note);
             dao.insert(note);
         } else {
             note.setTitle(titleEditText.getText().toString());
             note.setContent(contentEditText.getText().toString());
             note.setUpdatedTime(time);
+            Notes.setUniqueTitle(note);
             dao.update(note);
         }
         setToolbarTitle(R.string.app_name);
@@ -318,18 +319,12 @@ public class NoteActivity extends AppCompatActivity implements
     public final void onSubmit(final int operation,
                                final ConnectInfo connectInfo) {
         if (operation == UPLOAD_OPERATION) {
-            try {
-                Intent intent = new Intent(this, NoteActivity.class);
-                intent.putExtra(ARG_NOTE_ID, note.getId());
-                List<Note> notes = new ArrayList<>();
-                notes.add(note);
-                new Uploader(getApplicationContext(), connectInfo, intent,
-                        notes, SUBSCRIBER_ID);
-            } catch (JSONException e) {
-                ErrorDialog.show(this,
-                        getString(R.string.upload_failure_title),
-                        e.getMessage());
-            }
+            Intent intent = new Intent(this, NoteActivity.class);
+            intent.putExtra(ARG_NOTE_ID, note.getId());
+            List<Note> notes = new ArrayList<>();
+            notes.add(note);
+            new Uploader(getApplicationContext(), connectInfo, intent, notes,
+                    SUBSCRIBER_ID);
         }
 
         runOnUiThread(new Runnable() {
@@ -418,20 +413,20 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     /**
-     * Triggered on JSON file writer event.
+     * Triggered on TXT file writer event.
      *
-     * @param event JSON file writer event
+     * @param event TXT file writer event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public final void onJsonFileWriterEvent(final JsonFileWriterEvent event) {
+    public final void onTxtFileWriterEvent(final TxtFileWriterEvent event) {
         if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
             return;
         }
         switch (event.getResult()) {
-            case JsonFileWriterEvent.OK:
+            case TxtFileWriterEvent.OK:
                 progressBar.setVisibility(View.VISIBLE);
                 break;
-            case JsonFileWriterEvent.ERROR:
+            case TxtFileWriterEvent.ERROR:
                 ErrorDialog.show(this,
                         getString(R.string.upload_writing_failure_title),
                         event.getException().getMessage());

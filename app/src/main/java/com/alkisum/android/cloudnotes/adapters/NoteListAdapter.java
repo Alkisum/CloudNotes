@@ -33,7 +33,7 @@ public class NoteListAdapter extends BaseAdapter {
      * Note's time date format.
      */
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
-            "MMM dd, YYY", Locale.getDefault());
+            "MMM dd, YYY 'at' HH:mm:SS", Locale.getDefault());
 
     /**
      * Context.
@@ -108,13 +108,6 @@ public class NoteListAdapter extends BaseAdapter {
         for (Note note : notes) {
             note.setSelected(true);
         }
-    }
-
-    /**
-     * @return List of notes
-     */
-    public final List<Note> getNotes() {
-        return notes;
     }
 
     @Override

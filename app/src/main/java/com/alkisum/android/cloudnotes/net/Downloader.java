@@ -4,22 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alkisum.android.cloudlib.events.DownloadEvent;
-import com.alkisum.android.cloudlib.events.JsonFileReaderEvent;
-import com.alkisum.android.cloudlib.file.json.JsonFile;
-import com.alkisum.android.cloudlib.file.json.JsonFileReader;
+import com.alkisum.android.cloudlib.events.TxtFileReaderEvent;
+import com.alkisum.android.cloudlib.file.txt.TxtFile;
+import com.alkisum.android.cloudlib.file.txt.TxtFileReader;
 import com.alkisum.android.cloudlib.net.ConnectInfo;
 import com.alkisum.android.cloudlib.net.nextcloud.NcDownloader;
 import com.alkisum.android.cloudnotes.database.Inserter;
 import com.alkisum.android.cloudnotes.events.InsertEvent;
-import com.alkisum.android.cloudnotes.files.Json;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class starting download operation and subscribing to download events.
@@ -55,7 +50,8 @@ public class Downloader {
         this.subscriberId = subscriberId;
         NcDownloader ncDownloader = new NcDownloader(context, intent,
                 "CloudNotesDownloader", "CloudNotes download",
-                new Integer[]{SUBSCRIBER_ID, subscriberId});
+                new Integer[]{SUBSCRIBER_ID, subscriberId},
+                new String[]{TxtFile.FILE_EXT});
 
         ncDownloader.init(
                 connectInfo.getAddress(),
@@ -77,7 +73,7 @@ public class Downloader {
         }
         switch (event.getResult()) {
             case DownloadEvent.OK:
-                new JsonFileReader(event.getFiles(),
+                new TxtFileReader(event.getFiles(),
                         new Integer[]{SUBSCRIBER_ID, subscriberId}).execute();
                 break;
             case DownloadEvent.NO_FILE:
@@ -92,27 +88,20 @@ public class Downloader {
     }
 
     /**
-     * Triggered on JSON file reader event.
+     * Triggered on TXT file reader event.
      *
-     * @param event JSON file reader event
+     * @param event TXT file reader event
      */
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public final void onJsonFileReaderEvent(final JsonFileReaderEvent event) {
+    public final void onTxtFileReaderEvent(final TxtFileReaderEvent event) {
         if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
             return;
         }
         switch (event.getResult()) {
-            case JsonFileReaderEvent.OK:
-                List<JSONObject> jsonObjects = new ArrayList<>();
-                for (JsonFile jsonFile : event.getJsonFiles()) {
-                    if (Json.isFileNameValid(jsonFile)
-                            && !Json.isNoteAlreadyInDb(jsonFile)) {
-                        jsonObjects.add(jsonFile.getJsonObject());
-                    }
-                }
-                new Inserter(jsonObjects).execute();
+            case TxtFileReaderEvent.OK:
+                new Inserter(event.getTxtFiles()).execute();
                 break;
-            case JsonFileReaderEvent.ERROR:
+            case TxtFileReaderEvent.ERROR:
                 EventBus.getDefault().unregister(this);
                 break;
             default:

@@ -2,8 +2,8 @@ package com.alkisum.android.cloudnotes.model;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Transient;
+import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
 public class Note {
@@ -15,20 +15,16 @@ public class Note {
 
     private String content;
 
-    private Long createdTime;
-
     private Long updatedTime;
 
     @Transient
     private boolean selected;
 
-    @Generated(hash = 1442565144)
-    public Note(Long id, String title, String content, Long createdTime,
-            Long updatedTime) {
+    @Generated(hash = 182423927)
+    public Note(Long id, String title, String content, Long updatedTime) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.createdTime = createdTime;
         this.updatedTime = updatedTime;
     }
 
@@ -58,14 +54,6 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Long getCreatedTime() {
-        return this.createdTime;
-    }
-
-    public void setCreatedTime(Long createdTime) {
-        this.createdTime = createdTime;
     }
 
     public Long getUpdatedTime() {

@@ -21,8 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alkisum.android.cloudlib.events.DownloadEvent;
-import com.alkisum.android.cloudlib.events.JsonFileReaderEvent;
-import com.alkisum.android.cloudlib.events.JsonFileWriterEvent;
+import com.alkisum.android.cloudlib.events.TxtFileReaderEvent;
+import com.alkisum.android.cloudlib.events.TxtFileWriterEvent;
 import com.alkisum.android.cloudlib.events.UploadEvent;
 import com.alkisum.android.cloudlib.net.ConnectDialog;
 import com.alkisum.android.cloudlib.net.ConnectInfo;
@@ -44,7 +44,6 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
 
 import java.util.List;
 
@@ -458,15 +457,9 @@ public class MainActivity extends AppCompatActivity implements
             new Downloader(getApplicationContext(), connectInfo,
                     new Intent(this, MainActivity.class), SUBSCRIBER_ID);
         } else if (operation == UPLOAD_OPERATION) {
-            try {
-                new Uploader(getApplicationContext(), connectInfo,
-                        new Intent(this, MainActivity.class),
-                        Notes.getSelectedNotes(), SUBSCRIBER_ID);
-            } catch (JSONException e) {
-                ErrorDialog.show(this,
-                        getString(R.string.upload_failure_title),
-                        e.getMessage());
-            }
+            new Uploader(getApplicationContext(), connectInfo,
+                    new Intent(this, MainActivity.class),
+                    Notes.getSelectedNotes(), SUBSCRIBER_ID);
         }
 
         runOnUiThread(new Runnable() {
@@ -512,20 +505,20 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * Triggered on JSON file reader event.
+     * Triggered on TXT file reader event.
      *
-     * @param event JSON file reader event
+     * @param event TXT file reader event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public final void onJsonFileReaderEvent(final JsonFileReaderEvent event) {
+    public final void onTxtFileReaderEvent(final TxtFileReaderEvent event) {
         if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
             return;
         }
         switch (event.getResult()) {
-            case JsonFileReaderEvent.OK:
+            case TxtFileReaderEvent.OK:
                 progressBar.setVisibility(View.VISIBLE);
                 break;
-            case JsonFileReaderEvent.ERROR:
+            case TxtFileReaderEvent.ERROR:
                 ErrorDialog.show(this,
                         getString(R.string.download_reading_failure_title),
                         event.getException().getMessage());
@@ -562,20 +555,20 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * Triggered on JSON file writer event.
+     * Triggered on TXT file writer event.
      *
-     * @param event JSON file writer event
+     * @param event TXT file writer event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public final void onJsonFileWriterEvent(final JsonFileWriterEvent event) {
+    public final void onTxtFileWriterEvent(final TxtFileWriterEvent event) {
         if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
             return;
         }
         switch (event.getResult()) {
-            case JsonFileWriterEvent.OK:
+            case TxtFileWriterEvent.OK:
                 progressBar.setVisibility(View.VISIBLE);
                 break;
-            case JsonFileWriterEvent.ERROR:
+            case TxtFileWriterEvent.ERROR:
                 ErrorDialog.show(this,
                         getString(R.string.upload_writing_failure_title),
                         event.getException().getMessage());
