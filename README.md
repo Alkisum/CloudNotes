@@ -1,6 +1,6 @@
-# Notepad
+# CloudNotes
 
-Notepad is an Android app based on Material Design guidelines that enables the user to write notes and save them on their devices.
+CloudNotes is an Android app based on Material Design guidelines that enables the user to write notes and save them on their devices.
 
 
 ## Requirements
@@ -10,7 +10,7 @@ Notepad is an Android app based on Material Design guidelines that enables the u
 
 ## Installation
 
-+ Download the Notepad-x.x.apk file under the *release* directory to your smartphone
++ Download the cloudnotes-x.x.apk file under the *release* directory to your smartphone
 + Install the application by executing the file 
 
 
@@ -28,7 +28,6 @@ Notepad is an Android app based on Material Design guidelines that enables the u
 + [greenDAO](https://github.com/greenrobot/greenDAO)
 + [EventBus](https://github.com/greenrobot/EventBus)
 + [Butter Knife](https://github.com/JakeWharton/butterknife)
-+ [ownCloud Android Library](https://github.com/owncloud/android-library)
 + [Gson](https://github.com/google/gson)
 
 
