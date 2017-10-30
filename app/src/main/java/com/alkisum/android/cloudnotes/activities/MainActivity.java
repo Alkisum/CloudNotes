@@ -30,9 +30,13 @@ import com.alkisum.android.cloudlib.net.ConnectInfo;
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.adapters.NoteListAdapter;
 import com.alkisum.android.cloudnotes.database.Db;
+import com.alkisum.android.cloudnotes.database.Deleter;
 import com.alkisum.android.cloudnotes.database.Notes;
+import com.alkisum.android.cloudnotes.database.Restorer;
 import com.alkisum.android.cloudnotes.dialogs.ErrorDialog;
+import com.alkisum.android.cloudnotes.events.DeleteEvent;
 import com.alkisum.android.cloudnotes.events.InsertEvent;
+import com.alkisum.android.cloudnotes.events.RestoreEvent;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
 import com.alkisum.android.cloudnotes.net.Downloader;
@@ -283,9 +287,8 @@ public class MainActivity extends AppCompatActivity implements
                         ConnectDialog.FRAGMENT_TAG);
                 return true;
             case R.id.action_delete:
-                final List<Note> selectedNotes = Notes.getSelectedNotes();
-                if (!selectedNotes.isEmpty()) {
-                    deleteNotes(selectedNotes);
+                if (!Notes.getSelectedNotes().isEmpty()) {
+                    deleteNotes();
                 }
                 return true;
             case R.id.action_upload:
@@ -348,26 +351,23 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * Delete selected notes.
-     *
-     * @param selectedNotes List of selected notes to delete
+     * Execute the task to delete the selected notes.
      */
-    private void deleteNotes(final List<Note> selectedNotes) {
-        for (Note note : selectedNotes) {
-            dao.delete(note);
-        }
-        setEditMode(false);
-        listAdapter.setNotes(loadNotes());
-        listAdapter.notifyDataSetChanged();
-        Snackbar.make(fab, R.string.delete_notes_snackbar, Snackbar.LENGTH_LONG)
-                .setAction(R.string.action_undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        dao.insertInTx(selectedNotes);
-                        listAdapter.setNotes(loadNotes());
-                        listAdapter.notifyDataSetChanged();
-                    }
-                }).show();
+    private void deleteNotes() {
+        new Deleter(new Integer[]{SUBSCRIBER_ID}).execute();
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Execute the task to restore the given notes.
+     *
+     * @param notes Notes to restore
+     */
+    private void restoreNotes(final Note... notes) {
+        new Restorer().execute(notes);
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -626,5 +626,38 @@ public class MainActivity extends AppCompatActivity implements
             default:
                 break;
         }
+    }
+
+    /**
+     * Triggered on delete event.
+     *
+     * @param event Delete event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public final void onDeleteEvent(final DeleteEvent event) {
+        if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
+            return;
+        }
+        progressBar.setVisibility(View.GONE);
+        refreshList();
+        Snackbar.make(fab, R.string.delete_notes_snackbar, Snackbar.LENGTH_LONG)
+                .setAction(R.string.action_undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        List<Note> notes = event.getDeletedNotes();
+                        restoreNotes(notes.toArray(new Note[notes.size()]));
+                    }
+                }).show();
+    }
+
+    /**
+     * Triggered on restore event.
+     *
+     * @param event Restore event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public final void onRestoreEvent(final RestoreEvent event) {
+        progressBar.setVisibility(View.GONE);
+        refreshList();
     }
 }
