@@ -147,17 +147,17 @@ public class NoteActivity extends AppCompatActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        note = null;
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            long id = bundle.getLong(ARG_NOTE_ID);
-            note = Db.getInstance().getDaoSession().getNoteDao().load(id);
-        }
+        // Get intent, extras, action and MIME type
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        String action = intent.getAction();
+        String type = intent.getType();
 
-        // Enable KeyboardUtil only when the windowTranslucentStatus is enabled
-        if (!ThemePref.isLightStatusBarEnabled(this)) {
-            keyboardUtil = new KeyboardUtil(this, rootLayout);
-            keyboardUtil.enable();
+        note = null;
+        if (extras != null) {
+            // Started from MainActivity
+            long id = extras.getLong(ARG_NOTE_ID);
+            note = Db.getInstance().getDaoSession().getNoteDao().load(id);
         }
 
         if (note != null) {
@@ -167,6 +167,25 @@ public class NoteActivity extends AppCompatActivity implements
             // Edit mode
             setToolbarTitle(R.string.note_toolbar_title_create);
             setEditMode(true);
+        }
+
+        if (Intent.ACTION_SEND.equals(action)
+                && type != null && "text/plain".equals(type)) {
+            // Started from other app
+            String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+            if (extraSubject != null) {
+                titleEditText.setText(extraSubject);
+            }
+            String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (extraText != null) {
+                contentEditText.setText(extraText);
+            }
+        }
+
+        // Enable KeyboardUtil only when the windowTranslucentStatus is enabled
+        if (!ThemePref.isLightStatusBarEnabled(this)) {
+            keyboardUtil = new KeyboardUtil(this, rootLayout);
+            keyboardUtil.enable();
         }
     }
 
