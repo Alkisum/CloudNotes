@@ -22,8 +22,10 @@ import com.alkisum.android.cloudlib.net.ConnectDialog;
 import com.alkisum.android.cloudlib.net.ConnectInfo;
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.database.Db;
+import com.alkisum.android.cloudnotes.database.Deleter;
 import com.alkisum.android.cloudnotes.database.Notes;
 import com.alkisum.android.cloudnotes.dialogs.ErrorDialog;
+import com.alkisum.android.cloudnotes.events.DeleteEvent;
 import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.model.NoteDao;
 import com.alkisum.android.cloudnotes.net.Uploader;
@@ -224,7 +226,10 @@ public class NoteActivity extends AppCompatActivity implements
                 setEditMode(true);
                 return true;
             case R.id.action_delete:
-                deleteNote();
+                note.setSelected(true);
+                if (!Notes.getSelectedNotes().isEmpty()) {
+                    deleteNote();
+                }
                 return true;
             case R.id.action_share:
                 share();
@@ -305,14 +310,9 @@ public class NoteActivity extends AppCompatActivity implements
      * Delete the note.
      */
     private void deleteNote() {
-        if (note != null) {
-            dao.delete(note);
-            // Notify MainActivity that a note has been deleted
-            Intent intent = new Intent();
-            intent.putExtra(ARG_NOTE_JSON, new Gson().toJson(note));
-            setResult(RESULT_OK, intent);
-        }
-        finish();
+        new Deleter(new Integer[]{SUBSCRIBER_ID}).execute();
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -465,5 +465,23 @@ public class NoteActivity extends AppCompatActivity implements
             default:
                 break;
         }
+    }
+
+    /**
+     * Triggered on delete event.
+     *
+     * @param event Delete event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public final void onDeleteEvent(final DeleteEvent event) {
+        if (!event.isSubscriberAllowed(SUBSCRIBER_ID)) {
+            return;
+        }
+
+        // Notify MainActivity that a note has been deleted
+        Intent intent = new Intent();
+        intent.putExtra(ARG_NOTE_JSON, new Gson().toJson(note));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
