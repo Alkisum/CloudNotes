@@ -22,9 +22,9 @@ public final class ErrorDialog {
     /**
      * Build and show the AlertDialog.
      *
-     * @param context         Context in which the dialog should be built
-     * @param title           Dialog title
-     * @param message         Dialog message
+     * @param context Context in which the dialog should be built
+     * @param title   Dialog title
+     * @param message Dialog message
      */
     public static void show(final Context context, final String title,
                             final String message) {
