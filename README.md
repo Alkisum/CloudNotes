@@ -18,8 +18,8 @@ CloudNotes is an Android app based on Material Design guidelines that enables th
 
 + List your notes
 + Add, edit, delete, share a note
-+ Upload your notes as JSON files to your ownCloud server or Nextcloud server
-+ Download your notes as JSON files from your ownCloud server or Nextcloud server
++ Upload your notes as .txt files to your ownCloud server or Nextcloud server
++ Download your notes as .txt files from your ownCloud server or Nextcloud server
 + Customise your app interface
 
 
