@@ -14,7 +14,7 @@ import com.alkisum.android.cloudnotes.ui.ThemePref;
  * Class defining constants for SharedPreferences.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.1
  * @since 1.0
  */
 public final class Pref {
@@ -88,8 +88,21 @@ public final class Pref {
             editor.putBoolean(LIGHT_STATUS_BAR,
                     ThemePref.DEFAULT_LIGHT_STATUS_BAR);
         }
-        if (!sharedPref.contains(CloudPref.SAVE_CLOUD_INFO)) {
-            editor.putBoolean(CloudPref.SAVE_CLOUD_INFO, true);
+        if (!sharedPref.contains(CloudPref.SAVE_ADDRESS)) {
+            editor.putBoolean(CloudPref.SAVE_ADDRESS,
+                    CloudPref.DEFAULT_SAVE_ADDRESS);
+        }
+        if (!sharedPref.contains(CloudPref.SAVE_PATH)) {
+            editor.putBoolean(CloudPref.SAVE_PATH,
+                    CloudPref.DEFAULT_SAVE_PATH);
+        }
+        if (!sharedPref.contains(CloudPref.SAVE_USERNAME)) {
+            editor.putBoolean(CloudPref.SAVE_USERNAME,
+                    CloudPref.DEFAULT_SAVE_USERNAME);
+        }
+        if (!sharedPref.contains(CloudPref.SAVE_PASSWORD)) {
+            editor.putBoolean(CloudPref.SAVE_PASSWORD,
+                    CloudPref.DEFAULT_SAVE_PASSWORD);
         }
         editor.apply();
     }

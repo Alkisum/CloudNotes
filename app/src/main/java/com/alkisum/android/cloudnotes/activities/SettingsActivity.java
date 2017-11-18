@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * Activity showing the application settings.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.1
  * @since 1.1
  */
 public class SettingsActivity extends AppCompatActivity {
@@ -168,10 +168,28 @@ public class SettingsActivity extends AppCompatActivity {
                 case Pref.LIGHT_STATUS_BAR:
                     Pref.reload(getActivity());
                     break;
-                case CloudPref.SAVE_CLOUD_INFO:
-                    if (!sharedPreferences.getBoolean(
-                            CloudPref.SAVE_CLOUD_INFO, true)) {
-                        discardOwnCloudInfo(sharedPreferences);
+                case CloudPref.SAVE_ADDRESS:
+                    if (!sharedPreferences.getBoolean(CloudPref.SAVE_ADDRESS,
+                            CloudPref.DEFAULT_SAVE_ADDRESS)) {
+                        discardCloudInfo(CloudPref.ADDRESS, sharedPreferences);
+                    }
+                    break;
+                case CloudPref.SAVE_PATH:
+                    if (!sharedPreferences.getBoolean(CloudPref.SAVE_PATH,
+                            CloudPref.DEFAULT_SAVE_PATH)) {
+                        discardCloudInfo(CloudPref.PATH, sharedPreferences);
+                    }
+                    break;
+                case CloudPref.SAVE_USERNAME:
+                    if (!sharedPreferences.getBoolean(CloudPref.SAVE_USERNAME,
+                            CloudPref.DEFAULT_SAVE_USERNAME)) {
+                        discardCloudInfo(CloudPref.USERNAME, sharedPreferences);
+                    }
+                    break;
+                case CloudPref.SAVE_PASSWORD:
+                    if (!sharedPreferences.getBoolean(CloudPref.SAVE_PASSWORD,
+                            CloudPref.DEFAULT_SAVE_PASSWORD)) {
+                        discardCloudInfo(CloudPref.PASSWORD, sharedPreferences);
                     }
                     break;
                 default:
@@ -180,16 +198,16 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         /**
-         * Discard ownCloud connection information. Called when the user turn
-         * off the save ownCloud info settings.
+         * Discard cloud connection information. Called when the user turn
+         * off one of the save info settings.
          *
+         * @param key        Key identifying the value to discard
          * @param sharedPref Shared Preferences
          */
-        private void discardOwnCloudInfo(final SharedPreferences sharedPref) {
+        private void discardCloudInfo(final String key,
+                                      final SharedPreferences sharedPref) {
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(CloudPref.ADDRESS, "");
-            editor.putString(CloudPref.PATH, "");
-            editor.putString(CloudPref.USERNAME, "");
+            editor.putString(key, "");
             editor.apply();
         }
 
