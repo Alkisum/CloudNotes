@@ -13,9 +13,10 @@ import com.alkisum.android.cloudnotes.model.Note;
 import com.alkisum.android.cloudnotes.ui.ColorPref;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 
-import java.text.SimpleDateFormat;
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,16 +25,10 @@ import butterknife.ButterKnife;
  * List adapter for the list view listing the notes.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.1
  * @since 1.0
  */
 public class NoteListAdapter extends BaseAdapter {
-
-    /**
-     * Note's time date format.
-     */
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
-            "MMM dd, YYY 'at' HH:mm:SS", Locale.getDefault());
 
     /**
      * Context.
@@ -143,7 +138,7 @@ public class NoteListAdapter extends BaseAdapter {
         holder.content.setText(note.getContent());
         holder.time.setText(String.format("%s %s",
                 context.getString(R.string.note_last_update),
-                DATE_FORMAT.format(note.getUpdatedTime())));
+                new PrettyTime().format(new Date(note.getUpdatedTime()))));
         holder.checkBox.setChecked(note.isSelected());
         holder.checkBox.setButtonTintList(
                 ThemePref.getNoteCheckBoxTint(context));
