@@ -23,12 +23,18 @@ CloudNotes is an Android app based on Material Design guidelines that enables th
 + Customise your app interface
 
 
+## Screenshots
+
+![](/screenshots/cloudnotes_list.png) ![](/screenshots/cloudnotes_note.png) ![](/screenshots/cloudnotes_theme.png)
+
+
 ## Used libraries
 
 + [greenDAO](https://github.com/greenrobot/greenDAO)
 + [EventBus](https://github.com/greenrobot/EventBus)
 + [Butter Knife](https://github.com/JakeWharton/butterknife)
 + [Gson](https://github.com/google/gson)
++ [prettytime](https://github.com/ocpsoft/prettytime)
 
 
 ## License
