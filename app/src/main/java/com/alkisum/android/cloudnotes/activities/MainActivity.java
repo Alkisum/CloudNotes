@@ -62,7 +62,7 @@ import butterknife.OnItemLongClick;
  * Main activity listing the notes stored in the database.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 public class MainActivity extends AppCompatActivity implements
@@ -233,6 +233,9 @@ public class MainActivity extends AppCompatActivity implements
                 themeChanged = true;
                 break;
             case Pref.LIGHT_STATUS_BAR:
+                themeChanged = true;
+                break;
+            case Pref.LIGHT_NAVIGATION_BAR:
                 themeChanged = true;
                 break;
             default:

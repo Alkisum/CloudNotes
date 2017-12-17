@@ -23,6 +23,10 @@
             android:key="lightStatusBar"
             android:title="Light status bar"/>
 
+        <SwitchPreference
+            android:key="lightNavigationBar"
+            android:title="Light navigation bar"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -21,7 +21,7 @@ import com.alkisum.android.cloudnotes.utils.Pref;
  * Utility class for the application theme.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.2
  * @since 1.1
  */
 public final class ThemePref {
@@ -45,6 +45,11 @@ public final class ThemePref {
      * Default value for light status bar preference.
      */
     public static final boolean DEFAULT_LIGHT_STATUS_BAR = false;
+
+    /**
+     * Default value for light navigation bar preference.
+     */
+    public static final boolean DEFAULT_LIGHT_NAVIGATION_BAR = false;
 
     /**
      * ThemePref constructor.
@@ -77,9 +82,31 @@ public final class ThemePref {
                 break;
         }
 
+        // Apply status and navigation bar theme
         Window w = activity.getWindow();
-        if (isLightStatusBarEnabled(activity)
+        boolean lightStatusBar = isLightStatusBarEnabled(activity);
+        boolean lightNavigationBar = isLightNavigationBarEnabled(activity);
+        if (!lightStatusBar && !lightNavigationBar) {
+            // Disable light status bar and light navigation bar
+            w.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        } else if (lightStatusBar && lightNavigationBar
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Enable light status bar and light navigation bar
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.addFlags(WindowManager.LayoutParams
+                    .FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                            | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            w.setStatusBarColor(ContextCompat.getColor(
+                    activity, R.color.lightStatusBarColor));
+            w.setNavigationBarColor(ContextCompat.getColor(
+                    activity, R.color.lightNavigationBarColor));
+        } else if (lightStatusBar
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Enable light status bar only
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.addFlags(WindowManager.LayoutParams
                     .FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -87,8 +114,15 @@ public final class ThemePref {
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             w.setStatusBarColor(ContextCompat.getColor(
                     activity, R.color.lightStatusBarColor));
-        } else {
-            w.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Enable light navigation bar only
+            w.addFlags(WindowManager.LayoutParams
+                    .FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            w.setNavigationBarColor(ContextCompat.getColor(
+                    activity, R.color.lightNavigationBarColor));
+            // Disable light status bar
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
@@ -209,5 +243,18 @@ public final class ThemePref {
                 .getDefaultSharedPreferences(context);
         return sharedPref.getBoolean(Pref.LIGHT_STATUS_BAR,
                 DEFAULT_LIGHT_STATUS_BAR);
+    }
+
+    /**
+     * Check if the light navigation bar is enabled or not.
+     *
+     * @param context Context
+     * @return true if the light navigation bar is enabled, false otherwise
+     */
+    private static boolean isLightNavigationBarEnabled(final Context context) {
+        SharedPreferences sharedPref = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(Pref.LIGHT_NAVIGATION_BAR,
+                DEFAULT_LIGHT_NAVIGATION_BAR);
     }
 }

@@ -14,7 +14,7 @@ import com.alkisum.android.cloudnotes.ui.ThemePref;
  * Class defining constants for SharedPreferences.
  *
  * @author Alkisum
- * @version 2.1
+ * @version 2.2
  * @since 1.0
  */
 public final class Pref {
@@ -38,6 +38,11 @@ public final class Pref {
      * Preference key for the light status bar.
      */
     public static final String LIGHT_STATUS_BAR = "lightStatusBar";
+
+    /**
+     * Preference key for the light navigation bar.
+     */
+    public static final String LIGHT_NAVIGATION_BAR = "lightNavigationBar";
 
     /**
      * Preference key for about entry in Settings.
@@ -87,6 +92,10 @@ public final class Pref {
         if (!sharedPref.contains(LIGHT_STATUS_BAR)) {
             editor.putBoolean(LIGHT_STATUS_BAR,
                     ThemePref.DEFAULT_LIGHT_STATUS_BAR);
+        }
+        if (!sharedPref.contains(LIGHT_NAVIGATION_BAR)) {
+            editor.putBoolean(LIGHT_NAVIGATION_BAR,
+                    ThemePref.DEFAULT_LIGHT_NAVIGATION_BAR);
         }
         if (!sharedPref.contains(CloudPref.SAVE_ADDRESS)) {
             editor.putBoolean(CloudPref.SAVE_ADDRESS,

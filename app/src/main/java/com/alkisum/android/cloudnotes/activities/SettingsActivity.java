@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * Activity showing the application settings.
  *
  * @author Alkisum
- * @version 2.1
+ * @version 2.2
  * @since 1.1
  */
 public class SettingsActivity extends AppCompatActivity {
@@ -124,6 +124,15 @@ public class SettingsActivity extends AppCompatActivity {
                 category.removePreference(lightStatusBar);
             }
 
+            // Do not show light navigation bar preference for API < 26
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                PreferenceCategory category = (PreferenceCategory)
+                        findPreference("interface");
+                SwitchPreference lightNavigationBar = (SwitchPreference)
+                        findPreference("lightNavigationBar");
+                category.removePreference(lightNavigationBar);
+            }
+
             // About
             Preference aboutPref = findPreference(Pref.ABOUT);
             aboutPref.setOnPreferenceClickListener(
@@ -166,6 +175,9 @@ public class SettingsActivity extends AppCompatActivity {
                     Pref.reload(getActivity());
                     break;
                 case Pref.LIGHT_STATUS_BAR:
+                    Pref.reload(getActivity());
+                    break;
+                case Pref.LIGHT_NAVIGATION_BAR:
                     Pref.reload(getActivity());
                     break;
                 case CloudPref.SAVE_ADDRESS:
