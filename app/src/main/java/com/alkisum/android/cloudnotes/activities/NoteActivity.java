@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
  * Activity showing a note and enabling the user to make actions on it.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 public class NoteActivity extends AppCompatActivity implements
@@ -369,11 +369,12 @@ public class NoteActivity extends AppCompatActivity implements
 
     @Override
     public final void onBackPressed() {
-        if (editMode && note != null) {
-            setToolbarTitle(R.string.app_name);
-            setEditMode(false);
-        } else {
+        if (!editMode || (note == null
+                && titleEditText.getText().toString().equals("")
+                && contentEditText.getText().toString().equals(""))) {
             super.onBackPressed();
+        } else {
+            saveNote();
         }
     }
 
