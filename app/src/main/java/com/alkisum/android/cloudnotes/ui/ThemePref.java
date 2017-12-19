@@ -21,7 +21,7 @@ import com.alkisum.android.cloudnotes.utils.Pref;
  * Utility class for the application theme.
  *
  * @author Alkisum
- * @version 2.2
+ * @version 2.3
  * @since 1.1
  */
 public final class ThemePref {
@@ -125,6 +125,20 @@ public final class ThemePref {
             // Disable light status bar
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
+    /**
+     * Make global changes on views after inflation.
+     *
+     * @param activity Activity to change the views on
+     */
+    public static void applyViews(final Activity activity) {
+        View separator = activity.findViewById(R.id.light_nav_bar_separator);
+        if (isLightNavigationBarEnabled(activity)) {
+            separator.setVisibility(View.VISIBLE);
+        } else {
+            separator.setVisibility(View.GONE);
         }
     }
 

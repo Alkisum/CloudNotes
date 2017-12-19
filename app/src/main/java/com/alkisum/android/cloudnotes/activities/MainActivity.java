@@ -62,7 +62,7 @@ import butterknife.OnItemLongClick;
  * Main activity listing the notes stored in the database.
  *
  * @author Alkisum
- * @version 2.2
+ * @version 2.3
  * @since 1.0
  */
 public class MainActivity extends AppCompatActivity implements
@@ -165,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        ThemePref.applyViews(this);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.registerOnSharedPreferenceChangeListener(this);

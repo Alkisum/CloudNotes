@@ -8,8 +8,8 @@ android {
         applicationId "com.alkisum.android.cloudnotes"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 5
-        versionName "2.2"
+        versionCode 6
+        versionName "2.3.dev"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {

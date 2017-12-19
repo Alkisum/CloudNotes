@@ -83,4 +83,7 @@
 
     </RelativeLayout>
 
+    <include
+        layout="@layout/layout_light_nav_bar_separator"/>
+
 </LinearLayout>

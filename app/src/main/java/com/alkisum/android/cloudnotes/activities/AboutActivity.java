@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Activity listing information about the application.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public class AboutActivity extends AppCompatActivity {
@@ -36,6 +36,8 @@ public class AboutActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
+
+        ThemePref.applyViews(this);
 
         // Toolbar
         Toolbar toolbar = AppBar.inflate(this, R.id.about_stub_app_bar);

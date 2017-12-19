@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
  * Activity showing a note and enabling the user to make actions on it.
  *
  * @author Alkisum
- * @version 2.2
+ * @version 2.3
  * @since 1.0
  */
 public class NoteActivity extends AppCompatActivity implements
@@ -139,6 +139,8 @@ public class NoteActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_note);
         ButterKnife.bind(this);
+
+        ThemePref.applyViews(this);
 
         // Toolbar
         Toolbar toolbar = AppBar.inflate(this, R.id.note_stub_app_bar);

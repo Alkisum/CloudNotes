@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * Activity showing the application settings.
  *
  * @author Alkisum
- * @version 2.2
+ * @version 2.3
  * @since 1.1
  */
 public class SettingsActivity extends AppCompatActivity {
@@ -40,6 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
+
+        ThemePref.applyViews(this);
 
         // Toolbar
         Toolbar toolbar = AppBar.inflate(this, R.id.settings_stub_app_bar);
