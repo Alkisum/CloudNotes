@@ -3,7 +3,6 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.alkisum.android.cloudnotes"
         minSdkVersion 21
@@ -25,16 +24,16 @@ greendao {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(path: ':cloudlib')
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'org.greenrobot:eventbus:3.1.1'
-    compile 'org.greenrobot:greendao:3.2.2'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':cloudlib')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
+    implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 }
