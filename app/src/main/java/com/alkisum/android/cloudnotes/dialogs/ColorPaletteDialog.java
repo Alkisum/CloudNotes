@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * Dialog showing the color palette in Settings.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.4
  * @since 1.1
  */
 public class ColorPaletteDialog extends DialogFragment {
@@ -84,6 +84,10 @@ public class ColorPaletteDialog extends DialogFragment {
     @NonNull
     @Override
     public final Dialog onCreateDialog(final Bundle savedInstanceState) {
+        if (getArguments() == null) {
+            throw new IllegalArgumentException(
+                    "Argument " + ARG_USAGE + " required");
+        }
         usage = getArguments().getInt(ARG_USAGE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

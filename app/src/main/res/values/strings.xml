@@ -29,16 +29,13 @@
     <string name="about_github">https://github.com/Alkisum/CloudNotes/</string>
 
     <!-- General OwnCloud Operations -->
-    <string name="operation_progress_init_msg">Preparing&#8230; (0%)</string>
     <string name="upload_writing_failure_title">File creation failed</string>
     <string name="upload_failure_title">Upload failed</string>
     <string name="download_failure_title">Download failed</string>
     <string name="download_success_snackbar">Notes downloaded</string>
     <string name="download_no_file_snackbar">No notes to be downloaded</string>
     <string name="download_reading_failure_title">File parsing failed</string>
-    <string name="download_reading_msg">Reading data&#8230;</string>
     <string name="download_insert_failure_title">Insertion into database failed</string>
-    <string name="download_inserting_msg">Inserting data&#8230;</string>
     <string name="upload_success_snackbar">Note uploaded</string>
 
     <!-- Navigation drawer -->

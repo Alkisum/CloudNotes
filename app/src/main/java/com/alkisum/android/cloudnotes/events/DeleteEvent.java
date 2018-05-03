@@ -3,14 +3,13 @@ package com.alkisum.android.cloudnotes.events;
 import com.alkisum.android.cloudlib.events.FilteredEvent;
 import com.alkisum.android.cloudnotes.model.Note;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class defining delete event for EventBus.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.4
  * @since 2.0
  */
 public class DeleteEvent extends FilteredEvent {
@@ -18,7 +17,7 @@ public class DeleteEvent extends FilteredEvent {
     /**
      * Deleted notes.
      */
-    private List<Note> deletedNotes = new ArrayList<>();
+    private List<Note> deletedNotes;
 
     /**
      * DeleteEvent constructor.
