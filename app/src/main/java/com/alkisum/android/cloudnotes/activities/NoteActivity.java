@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
  * Activity showing a note and enabling the user to make actions on it.
  *
  * @author Alkisum
- * @version 2.3
+ * @version 2.5
  * @since 1.0
  */
 public class NoteActivity extends AppCompatActivity implements
@@ -195,6 +195,12 @@ public class NoteActivity extends AppCompatActivity implements
     public final void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public final void onPause() {
+        super.onPause();
+        hideKeyboard();
     }
 
     @Override
