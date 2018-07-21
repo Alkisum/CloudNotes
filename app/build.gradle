@@ -7,12 +7,17 @@ android {
         applicationId "com.alkisum.android.cloudnotes"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 8
-        versionName "2.5"
+        versionCode 9
+        versionName "2.6.dev"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

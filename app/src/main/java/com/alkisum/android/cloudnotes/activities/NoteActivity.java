@@ -162,13 +162,25 @@ public class NoteActivity extends AppCompatActivity implements
             note = Db.getInstance().getDaoSession().getNoteDao().load(id);
         }
 
-        if (note != null) {
-            // Read mode
-            setEditMode(false);
+        if (savedInstanceState != null) {
+            // set edit mode saved before configuration changes
+            setEditMode(savedInstanceState.getBoolean("edit_mode"));
+            if (editMode) {
+                // set edit texts saved before configuration changes
+                titleEditText.setText(
+                        savedInstanceState.getString("title_edit_text"));
+                contentEditText.setText(
+                        savedInstanceState.getString("content_edit_text"));
+            }
         } else {
-            // Edit mode
-            setToolbarTitle(R.string.note_toolbar_title_create);
-            setEditMode(true);
+            if (note != null) {
+                // Read mode
+                setEditMode(false);
+            } else {
+                // Edit mode
+                setToolbarTitle(R.string.note_toolbar_title_create);
+                setEditMode(true);
+            }
         }
 
         if (Intent.ACTION_SEND.equals(action)
@@ -215,6 +227,16 @@ public class NoteActivity extends AppCompatActivity implements
         if (!ThemePref.isLightStatusBarEnabled(this)) {
             keyboardUtil.disable();
         }
+    }
+
+    @Override
+    protected final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("edit_mode", editMode);
+        outState.putString("title_edit_text",
+                titleEditText.getText().toString());
+        outState.putString("content_edit_text",
+                contentEditText.getText().toString());
     }
 
     @Override
