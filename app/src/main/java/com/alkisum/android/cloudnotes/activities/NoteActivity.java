@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +29,7 @@ import com.alkisum.android.cloudnotes.net.Uploader;
 import com.alkisum.android.cloudnotes.ui.AppBar;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 import com.alkisum.android.cloudnotes.utils.KeyboardUtil;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,6 +39,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,7 +49,7 @@ import butterknife.ButterKnife;
  * Activity showing a note and enabling the user to make actions on it.
  *
  * @author Alkisum
- * @version 2.5
+ * @version 2.7
  * @since 1.0
  */
 public class NoteActivity extends AppCompatActivity implements
@@ -183,8 +184,7 @@ public class NoteActivity extends AppCompatActivity implements
             }
         }
 
-        if (Intent.ACTION_SEND.equals(action)
-                && type != null && "text/plain".equals(type)) {
+        if (Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
             // Started from other app
             String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
             if (extraSubject != null) {
@@ -230,7 +230,7 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected final void onSaveInstanceState(final Bundle outState) {
+    protected final void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("edit_mode", editMode);
         outState.putString("title_edit_text",
@@ -376,12 +376,9 @@ public class NoteActivity extends AppCompatActivity implements
                     SUBSCRIBER_ID);
         }
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setIndeterminate(true);
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        runOnUiThread(() -> {
+            progressBar.setIndeterminate(true);
+            progressBar.setVisibility(View.VISIBLE);
         });
     }
 
@@ -434,16 +431,13 @@ public class NoteActivity extends AppCompatActivity implements
      * Show the keyboard.
      */
     private void showKeyboard() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                titleEditText.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.showSoftInput(titleEditText,
-                            InputMethodManager.SHOW_FORCED);
-                }
+        new Handler().postDelayed(() -> {
+            titleEditText.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(titleEditText,
+                        InputMethodManager.SHOW_FORCED);
             }
         }, 100);
     }

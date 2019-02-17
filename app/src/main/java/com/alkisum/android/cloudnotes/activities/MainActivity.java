@@ -4,16 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +34,9 @@ import com.alkisum.android.cloudnotes.net.Uploader;
 import com.alkisum.android.cloudnotes.ui.AppBar;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 import com.alkisum.android.cloudnotes.utils.Pref;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +45,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -62,7 +62,7 @@ import butterknife.OnItemLongClick;
  * Main activity listing the notes stored in the database.
  *
  * @author Alkisum
- * @version 2.3
+ * @version 2.7
  * @since 1.0
  */
 public class MainActivity extends AppCompatActivity implements
@@ -189,13 +189,9 @@ public class MainActivity extends AppCompatActivity implements
         listAdapter = new NoteListAdapter(this, loadNotes());
         listView.setAdapter(listAdapter);
 
-        swipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        refreshList();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+                    refreshList();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
         );
 
@@ -382,25 +378,16 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void setEditMode(final boolean editMode) {
         if (editMode) {
-            fab.setVisibility(View.GONE);
+            fab.hide();
             toggle.setDrawerIndicatorEnabled(false);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    setEditMode(false);
-                }
-            });
+            toolbar.setNavigationOnClickListener(v -> setEditMode(false));
         } else {
-            fab.setVisibility(View.VISIBLE);
+            fab.show();
             toggle.setDrawerIndicatorEnabled(true);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    drawer.openDrawer(GravityCompat.START);
-                }
-            });
+            toolbar.setNavigationOnClickListener(
+                    v -> drawer.openDrawer(GravityCompat.START));
         }
         listAdapter.setEditMode(editMode);
         listAdapter.notifyDataSetChanged();
@@ -462,15 +449,11 @@ public class MainActivity extends AppCompatActivity implements
                 final Note note = new Gson().fromJson(json, Note.class);
                 Snackbar.make(fab, R.string.delete_note_snackbar,
                         Snackbar.LENGTH_LONG)
-                        .setAction(R.string.action_undo,
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(final View v) {
-                                        dao.insert(note);
-                                        listAdapter.setNotes(loadNotes());
-                                        listAdapter.notifyDataSetChanged();
-                                    }
-                                }).show();
+                        .setAction(R.string.action_undo, v -> {
+                            dao.insert(note);
+                            listAdapter.setNotes(loadNotes());
+                            listAdapter.notifyDataSetChanged();
+                        }).show();
             }
         }
     }
@@ -487,12 +470,9 @@ public class MainActivity extends AppCompatActivity implements
                     Notes.getSelectedNotes(), SUBSCRIBER_ID);
         }
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setIndeterminate(true);
-                progressBar.setVisibility(View.VISIBLE);
-            }
+        runOnUiThread(() -> {
+            progressBar.setIndeterminate(true);
+            progressBar.setVisibility(View.VISIBLE);
         });
     }
 
@@ -646,12 +626,9 @@ public class MainActivity extends AppCompatActivity implements
         progressBar.setVisibility(View.GONE);
         refreshList();
         Snackbar.make(fab, R.string.delete_notes_snackbar, Snackbar.LENGTH_LONG)
-                .setAction(R.string.action_undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        List<Note> notes = event.getDeletedNotes();
-                        restoreNotes(notes.toArray(new Note[notes.size()]));
-                    }
+                .setAction(R.string.action_undo, v -> {
+                    List<Note> notes = event.getDeletedNotes();
+                    restoreNotes(notes.toArray(new Note[0]));
                 }).show();
     }
 

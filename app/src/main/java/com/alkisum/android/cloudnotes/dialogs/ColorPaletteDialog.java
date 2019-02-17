@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.alkisum.android.cloudnotes.R;
@@ -17,7 +14,10 @@ import com.alkisum.android.cloudnotes.ui.ColorPref;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * Dialog showing the color palette in Settings.
  *
  * @author Alkisum
- * @version 2.4
+ * @version 2.7
  * @since 1.1
  */
 public class ColorPaletteDialog extends DialogFragment {
@@ -107,14 +107,8 @@ public class ColorPaletteDialog extends DialogFragment {
         ColorGridAdapter adapter = new ColorGridAdapter(getActivity(), colors,
                 currentColorKey);
         grid.setAdapter(adapter);
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent,
-                                    final View view, final int position,
-                                    final long id) {
-                onItemClicked(position);
-            }
-        });
+        grid.setOnItemClickListener(
+                (parent, view1, position, id) -> onItemClicked(position));
 
         String title = "";
         if (usage == PRIMARY_USE) {
@@ -166,12 +160,6 @@ public class ColorPaletteDialog extends DialogFragment {
      * OnClickListener for the negative button.
      */
     private final DialogInterface.OnClickListener onNegativeButtonClicked =
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog,
-                                    final int which) {
-                    getDialog().cancel();
-                }
-            };
+            (dialog, which) -> Objects.requireNonNull(getDialog()).cancel();
 
 }

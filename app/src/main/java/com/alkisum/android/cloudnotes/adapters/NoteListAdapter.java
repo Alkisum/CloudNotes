@@ -1,7 +1,6 @@
 package com.alkisum.android.cloudnotes.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.widget.AppCompatCheckBox;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * List adapter for the list view listing the notes.
  *
  * @author Alkisum
- * @version 2.1
+ * @version 2.7
  * @since 1.0
  */
 public class NoteListAdapter extends BaseAdapter {
@@ -145,12 +145,8 @@ public class NoteListAdapter extends BaseAdapter {
 
         if (editMode) {
             holder.checkBox.setVisibility(View.VISIBLE);
-            holder.checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    note.setSelected(holder.checkBox.isChecked());
-                }
-            });
+            holder.checkBox.setOnClickListener(
+                    view1 -> note.setSelected(holder.checkBox.isChecked()));
         } else {
             holder.checkBox.setVisibility(View.GONE);
         }

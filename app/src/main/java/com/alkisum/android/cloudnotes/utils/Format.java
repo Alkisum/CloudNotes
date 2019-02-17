@@ -7,16 +7,17 @@ import java.util.Locale;
  * Utility class to format values.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.7
  * @since 1.1
  */
 public final class Format {
 
     /**
-     * Format for build date.
+     * @return Format for build date
      */
-    public static final SimpleDateFormat DATE_BUILD =
-            new SimpleDateFormat("MMM. dd, yyyy", Locale.getDefault());
+    public static SimpleDateFormat getDateBuild() {
+        return new SimpleDateFormat("MMM. dd, yyyy", Locale.getDefault());
+    }
 
     /**
      * Format constructor.

@@ -3,7 +3,6 @@ package com.alkisum.android.cloudnotes.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.utils.Pref;
@@ -11,12 +10,15 @@ import com.alkisum.android.cloudnotes.utils.Pref;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Utility class for color preferences.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.7
  * @since 1.1
  */
 public final class ColorPref {
@@ -197,7 +199,8 @@ public final class ColorPref {
                 .getDefaultSharedPreferences(context);
         String key = sharedPref.getString(Pref.PRIMARY_COLOR,
                 DEFAULT_PRIMARY_COLOR);
-        return ContextCompat.getColor(context, COLORS.get(key).getCode());
+        return ContextCompat.getColor(context,
+                Objects.requireNonNull(COLORS.get(key)).getCode());
     }
 
     /**
@@ -226,7 +229,8 @@ public final class ColorPref {
                 .getDefaultSharedPreferences(context);
         String key = sharedPref.getString(Pref.ACCENT_COLOR,
                 DEFAULT_ACCENT_COLOR);
-        return ContextCompat.getColor(context, COLORS.get(key).getCode());
+        return ContextCompat.getColor(context,
+                Objects.requireNonNull(COLORS.get(key)).getCode());
     }
 
     /**
@@ -255,7 +259,7 @@ public final class ColorPref {
                 .getDefaultSharedPreferences(context);
         String key = sharedPref.getString(Pref.PRIMARY_COLOR,
                 DEFAULT_PRIMARY_COLOR);
-        return COLORS.get(key).getName();
+        return Objects.requireNonNull(COLORS.get(key)).getName();
 
     }
 
@@ -270,7 +274,7 @@ public final class ColorPref {
                 .getDefaultSharedPreferences(context);
         String key = sharedPref.getString(Pref.ACCENT_COLOR,
                 DEFAULT_ACCENT_COLOR);
-        return COLORS.get(key).getName();
+        return Objects.requireNonNull(COLORS.get(key)).getName();
     }
 
     /**
@@ -285,7 +289,7 @@ public final class ColorPref {
                 .getDefaultSharedPreferences(context);
         String key = sharedPref.getString(Pref.PRIMARY_COLOR,
                 DEFAULT_PRIMARY_COLOR);
-        return COLORS.get(key).getAppBarLayout();
+        return Objects.requireNonNull(COLORS.get(key)).getAppBarLayout();
 
     }
 

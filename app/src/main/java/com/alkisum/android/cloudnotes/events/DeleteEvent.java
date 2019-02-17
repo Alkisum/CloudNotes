@@ -9,7 +9,7 @@ import java.util.List;
  * Class defining delete event for EventBus.
  *
  * @author Alkisum
- * @version 2.4
+ * @version 2.7
  * @since 2.0
  */
 public class DeleteEvent extends FilteredEvent {
@@ -17,7 +17,7 @@ public class DeleteEvent extends FilteredEvent {
     /**
      * Deleted notes.
      */
-    private List<Note> deletedNotes;
+    private final List<Note> deletedNotes;
 
     /**
      * DeleteEvent constructor.

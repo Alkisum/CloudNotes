@@ -10,8 +10,6 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.alkisum.android.cloudlib.utils.CloudPref;
 import com.alkisum.android.cloudnotes.R;
@@ -21,13 +19,15 @@ import com.alkisum.android.cloudnotes.ui.ColorPref;
 import com.alkisum.android.cloudnotes.ui.ThemePref;
 import com.alkisum.android.cloudnotes.utils.Pref;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.ButterKnife;
 
 /**
  * Activity showing the application settings.
  *
  * @author Alkisum
- * @version 2.3
+ * @version 2.7
  * @since 1.1
  */
 public class SettingsActivity extends AppCompatActivity {
@@ -90,14 +90,9 @@ public class SettingsActivity extends AppCompatActivity {
             primaryColorPref.setSummary(ColorPref.getPrimarySummary(
                     getActivity()));
             primaryColorPref.setOnPreferenceClickListener(
-                    new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(
-                                final Preference preference) {
-                            showColorPaletteDialog(
-                                    ColorPaletteDialog.PRIMARY_USE);
-                            return false;
-                        }
+                    preference -> {
+                        showColorPaletteDialog(ColorPaletteDialog.PRIMARY_USE);
+                        return false;
                     }
             );
 
@@ -106,14 +101,9 @@ public class SettingsActivity extends AppCompatActivity {
             accentColorPref.setSummary(ColorPref.getAccentSummary(
                     getActivity()));
             accentColorPref.setOnPreferenceClickListener(
-                    new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(
-                                final Preference preference) {
-                            showColorPaletteDialog(
-                                    ColorPaletteDialog.ACCENT_USE);
-                            return false;
-                        }
+                    preference -> {
+                        showColorPaletteDialog(ColorPaletteDialog.ACCENT_USE);
+                        return false;
                     }
             );
 
@@ -137,16 +127,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             // About
             Preference aboutPref = findPreference(Pref.ABOUT);
-            aboutPref.setOnPreferenceClickListener(
-                    new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(
-                                final Preference preference) {
-                            startActivity(new Intent(getActivity(),
-                                    AboutActivity.class));
-                            return false;
-                        }
-                    });
+            aboutPref.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), AboutActivity.class));
+                return false;
+            });
         }
 
         @Override

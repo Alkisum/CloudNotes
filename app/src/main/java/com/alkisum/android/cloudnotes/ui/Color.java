@@ -1,13 +1,14 @@
 package com.alkisum.android.cloudnotes.ui;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Class defining a color used for the app views.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.7
  * @since 1.1
  */
 public class Color {

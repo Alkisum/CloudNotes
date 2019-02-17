@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.alkisum.android.cloudnotes.BuildConfig;
 import com.alkisum.android.cloudnotes.R;
@@ -17,13 +15,15 @@ import com.alkisum.android.cloudnotes.utils.Pref;
 
 import java.util.Date;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.ButterKnife;
 
 /**
  * Activity listing information about the application.
  *
  * @author Alkisum
- * @version 2.3
+ * @version 2.7
  * @since 1.0
  */
 public class AboutActivity extends AppCompatActivity {
@@ -67,23 +67,19 @@ public class AboutActivity extends AppCompatActivity {
 
             // Build date
             Preference datePreference = findPreference(Pref.BUILD_DATE);
-            datePreference.setSummary(Format.DATE_BUILD.format(
+            datePreference.setSummary(Format.getDateBuild().format(
                     new Date(BuildConfig.TIMESTAMP)));
 
             // Github
             Preference githubPreference = findPreference(Pref.GITHUB);
             githubPreference.setOnPreferenceClickListener(
-                    new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(
-                                final Preference preference) {
-                            Intent intent = new Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(getString(R.string.about_github))
-                            );
-                            startActivity(intent);
-                            return false;
-                        }
+                    preference -> {
+                        Intent intent = new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(getString(R.string.about_github))
+                        );
+                        startActivity(intent);
+                        return false;
                     });
         }
     }

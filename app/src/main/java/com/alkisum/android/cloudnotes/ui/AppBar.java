@@ -1,17 +1,18 @@
 package com.alkisum.android.cloudnotes.ui;
 
 import android.app.Activity;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.ViewStub;
 
 import com.alkisum.android.cloudnotes.R;
+import com.google.android.material.appbar.AppBarLayout;
+
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * Utility class to inflate the AppBarLayout according to the current theme.
  *
  * @author Alkisum
- * @version 2.0
+ * @version 2.7
  * @since 1.1
  */
 public final class AppBar {

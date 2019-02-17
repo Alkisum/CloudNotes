@@ -7,8 +7,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -17,11 +15,16 @@ import android.view.WindowManager;
 import com.alkisum.android.cloudnotes.R;
 import com.alkisum.android.cloudnotes.utils.Pref;
 
+import java.util.Objects;
+
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+
 /**
  * Utility class for the application theme.
  *
  * @author Alkisum
- * @version 2.3
+ * @version 2.7
  * @since 1.1
  */
 public final class ThemePref {
@@ -69,13 +72,15 @@ public final class ThemePref {
         String theme = sharedPref.getString(Pref.THEME, DEFAULT_THEME);
         String accent = sharedPref.getString(Pref.ACCENT_COLOR,
                 ColorPref.DEFAULT_ACCENT_COLOR);
-        switch (theme) {
+        switch (Objects.requireNonNull(theme)) {
             case LIGHT:
-                activity.setTheme(ColorPref.getColors().get(accent)
+                activity.setTheme(Objects.requireNonNull(
+                        ColorPref.getColors().get(accent))
                         .getLightThemeStyle());
                 break;
             case DARK:
-                activity.setTheme(ColorPref.getColors().get(accent)
+                activity.setTheme(Objects.requireNonNull(
+                        ColorPref.getColors().get(accent))
                         .getDarkThemeStyle());
                 break;
             default:
@@ -153,7 +158,7 @@ public final class ThemePref {
                 .getDefaultSharedPreferences(context);
         String theme = sharedPref.getString(Pref.THEME, DEFAULT_THEME);
         String[] themes = context.getResources().getStringArray(R.array.themes);
-        switch (theme) {
+        switch (Objects.requireNonNull(theme)) {
             case LIGHT:
                 return themes[0];
             case DARK:
