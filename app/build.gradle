@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 11
-        versionName "2.7.dev"
+        versionName "2.8"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
